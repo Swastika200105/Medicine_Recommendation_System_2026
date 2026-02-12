@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Health Care Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+
+  <body>
+
+  <!--this is navbar in our site's-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <div class="logo">
+      <img class="myimg" src="{{ url_for('static', filename='img.png') }}" alt="">
+    </div>
+    <a class="navbar-brand" href="#" style="font-weight: bold;">HealthCare AI</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+           <a class="nav-link active" href="{{ url_for('index') }}">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('about') }}">About</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('developer') }}">Developer</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('blog') }}">Blog</a>
+        </li>
+      </ul>
+        <button class="btn btn-outline-light ms-2" onclick="toggleDarkMode()">
+            🌙 Mode
+        </button>
+
+    </div>
+  </div>
+</nav>
+
+<!-- main form of page -->
+   <div class="container mt-5">
+  <div class="row align-items-center">
+
+    <!-- Text Side -->
+    <div class="col-md-6">
+      <h2 class="fw-bold">
+        Describe Your Symptoms
+      </h2>
+      <p class="text-muted">
+        Tell us about what you're experiencing, and we'll help you understand potential conditions and next steps for your health.
+      </p>
+
+  <div class="container mt-4 mb-4">
+  <div class="column">
+
+    <div class="col-md-4 mb-3">
+      <h5><span class="text-success">✓</span> Quick & Easy</h5>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <h5><span class="text-success">✓</span> Personalized</h5>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <h5><span class="text-success">✓</span> Confidential</h5>
+    </div>
+
+  </div>
+</div>
+    </div>
+
+
+    <!-- Image Side -->
+    <div class="col-md-6 text-center">
+      <img src="{{ url_for('static', filename='dashboard.png') }}"
+           class="img-fluid rounded shadow"
+           alt="Illustration of symptoms input">
+    </div>
+
+  </div>
+</div>
+  <div class="container my-5 p-4 shadow-lg rounded bg-white">
+      <h5 class="mt-4">Popular Symptoms</h5>
+
+      <div class="symptom-list">
+
+        <label class="symptom-item">
+          <input type="checkbox" value="mild_fever">
+          <span>Mild Fever</span>
+        </label>
+
+        <label class="symptom-item">
+          <input type="checkbox" value="headache">
+           <span>Headache</span>
+        </label>
+
+        <label class="symptom-item">
+            <input type="checkbox" value="stomach_pain">
+            <span>Stomach Pain</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="cough">
+          <span>Cough</span>
+        </label>
+
+        <label class="symptom-item">
+          <input type="checkbox" value="fatigue">
+          <span>Fatigue</span>
+        </label>
+
+        <label class="symptom-item">
+          <input type="checkbox" value="back_pain">
+          <span>Back Pain</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="nausea">
+          <span>Nausea</span>
+        </label>
+          <label class="symptom-item">
+          <input type="checkbox" value="itching">
+          <span>Itching</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="skin_rash">
+          <span>Skin Rashes</span>
+        </label>
+          <label class="symptom-item">
+              <input type="checkbox" value="watering_from_eyes">
+              <span>Watering from eyes</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="nodal_skin_eruptions">
+          <span>Nodal skin eruptions</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="shivering">
+          <span>Shivering</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="chills">
+          <span>Chills</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="continuous_sneezing">
+            <span>Continuous Sneezing</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="acidity">
+           <span>Acidity</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="vomiting">
+           <span>Vomiting</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="weight_loss">
+           <span>Weight Loss</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="irregular_sugar_level">
+           <span>Irregular Sugar Level</span>
+        </label>
+        <label class="symptom-item">
+          <input type="checkbox" value="anxiety">
+           <span>Anxiety</span>
+        </label>
+</div>
+
+
+  </div>
+
+
+  <div class="container my-5 p-4 shadow-lg rounded bg-white">
+
+
+
+    <form action="/predict" method="post">
+        <div class="form-group">
+            <label for="symptoms">
+              🖋️ Describe Your Symptoms:
+              <span>(At least 3 symptoms required)</span>
+            </label><br>
+            <input type="text"
+               class="form-control form-control-lg shadow-sm"
+               id="symptoms"
+               name="symptoms"
+               placeholder="e.g. fever, headache, cough">
+
+
+        </div>
+        {% if message %}
+    <div style="color:red;margin-top:10px;font-weight:600;">
+        {{message}}
+    </div>
+    {% endif %}
+        <br>
+        <button type="button" id="startSpeechRecognition" class="btn btn-primary" style="margin-left:3px;border:1px solid white; border-radius:20px;">
+            Start Speech Recognition
+        </button>
+        <br>
+        <br>
+
+        <!-- Display the transcribed text here -->
+        <div name="mysysms" id="transcription"></div>
+
+
+
+        <button type="submit" class="btn btn-danger btn-lg" style="width: 100%; padding: 14px; margin-bottom: 5px;">Recommendation</button>
+    </form>
+</div>
+
+
+  <script>
+      //dark mode/light mode
+
+      function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+
+    // Save user preference
+    if (document.body.classList.contains("dark-mode")) {
+        localStorage.setItem("theme", "dark");
+    } else {
+        localStorage.setItem("theme", "light");
+    }
+}
+
+// Load saved mode
+window.onload = function () {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+};
+//popular symptoms input
+const checkboxes = document.querySelectorAll(".symptom-item input");
+const symptomInput = document.getElementById("symptoms");
+
+checkboxes.forEach(box => {
+    box.addEventListener("change", updateSymptoms);
+});
+
+function updateSymptoms() {
+    let selected = [];
+
+    checkboxes.forEach(cb => {
+        if (cb.checked) {
+            selected.push(cb.value);
+        }
+    });
+
+    symptomInput.value = selected.join(", ");
+}
+//speech recognition
+const startBtn = document.getElementById("startSpeechRecognition");
+const symptomsInput = document.getElementById("symptoms");
+
+function cleanSpeech(text) {
+    return text
+        .toLowerCase()
+        .replace(/ and /g, ",")
+        .replace(/ i have /g, "")
+        .replace(/ i am having /g, "")
+        .replace(/ symptoms are /g, "")
+        .replace(/\./g, "")
+        .trim();
+}
+
+startBtn.addEventListener("click", () => {
+    const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        alert("Speech Recognition not supported in this browser");
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+
+    recognition.onresult = function (event) {
+        const speechText = event.results[0][0].transcript;
+        const cleaned = cleanSpeech(speechText);
+        symptomsInput.value = cleaned;
+        console.log("Recognized:", cleaned);
+    };
+
+    recognition.onerror = function () {
+        alert("Speech recognition failed");
+    };
+
+    recognition.start();
+});
+</script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
