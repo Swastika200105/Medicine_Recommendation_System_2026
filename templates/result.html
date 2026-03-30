@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,168 +6,101 @@
 <title>AI Medical Report</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 @media print{
-    body{
-        background:white;
-    }
-
-    h1{
-        color:#2d9cdb;
-    }
-
-    ul{
-        margin-left:20px;
-    }
-
-    hr{
-        margin:20px 0;
-    }
+    body{background:white;}
+    h1{color:#2d9cdb;}
+    ul{margin-left:20px;}
+    hr{margin:20px 0;}
 }
-
 
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 body{background:#eef3f9;}
-
-.navbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:18px 50px;
-background:white;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
-}
-
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:18px 50px;background:white;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
 .container{width:1100px;margin:30px auto;}
-
-.card{
-background:white;
-border-radius:16px;
-padding:28px;
-box-shadow:0 10px 30px rgba(0,0,0,0.05);
-margin-bottom:25px;
-}
-
-.summary{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.circle{
-width:180px;height:180px;border-radius:50%;
-background:conic-gradient(#2d9cdb {{top3[0][1]}}%, #e6ecf3 0%);
-display:flex;justify-content:center;align-items:center;
-}
-
-.circle-inner{
-width:130px;height:130px;border-radius:50%;
-background:white;display:flex;justify-content:center;align-items:center;
-font-size:28px;font-weight:700;color:#2d9cdb;
-}
-
+.card{background:white;border-radius:16px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,0.05);margin-bottom:25px;}
+.summary{display:flex;justify-content:space-between;align-items:center;}
+.circle{width:180px;height:180px;border-radius:50%;background:conic-gradient(#2d9cdb {{top3[0][1]}}%, #e6ecf3 0%);display:flex;justify-content:center;align-items:center;}
+.circle-inner{width:130px;height:130px;border-radius:50%;background:white;display:flex;justify-content:center;align-items:center;font-size:28px;font-weight:700;color:#2d9cdb;}
 .bar{background:#e6ecf3;height:22px;border-radius:20px;margin-top:6px;overflow:hidden;}
 .fill{height:100%;}
-
 .tabs{display:flex;gap:12px;margin-top:20px;}
 .tab{padding:10px 18px;background:#e6ecf3;border-radius:20px;cursor:pointer;font-weight:600;}
 .tab.active{background:#2d9cdb;color:white;}
-
 .content{margin-top:20px;line-height:1.7;}
 ul{margin-left:18px;margin-top:8px;}
-
-button{
-padding:10px 18px;border:none;border-radius:8px;
-background:#2d9cdb;color:white;font-weight:600;cursor:pointer;
-}
-
-#chart{
-    width:240px !important;
-    height:240px !important;
-}
-
+button{padding:10px 18px;border:none;border-radius:8px;background:#2d9cdb;color:white;font-weight:600;cursor:pointer;}
+#chart{width:240px !important;height:240px !important;}
 </style>
 
 </head>
-
 <body>
 
 <div class="navbar">
 <h2>🩺 AI Medical Report</h2>
 <div>
 <button onclick="downloadReport()">Download Report</button>
-
 <a href="/"><button>Re-check</button></a>
 </div>
 </div>
+
+<!-- PRINTABLE REPORT -->
 <div id="printReport" style="display:none; padding:40px; font-family:Poppins;">
-    <h1>🩺 AI Medical Report</h1>
-    <hr><br>
+<h1>🩺 AI Medical Report</h1>
+<hr><br>
 
-    <h3>Selected Symptoms</h3>
-    <ul>
-    {% for s in user_symptoms %}
-        <li>{{s}}</li>
-    {% endfor %}
-    </ul>
-
-    <br>
-    <h3>Predicted Disease:</h3>
-    <h2 style="color:#2d9cdb">{{predicted_disease}}</h2>
-
-    <h3>Confidence:</h3>
-    <h2>{{top3[0][1]}}%</h2>
-
-    <br><br>
-    <p style="font-size:12px;color:red">
-    ⚠ This is AI-generated medical prediction. Consult doctor for confirmation.
-    </p>
-</div>
-
-
-<div class="container">
-    <!-- SELECTED SYMPTOMS CARD -->
-<div class="card">
-<h3>🧾 Selected Symptoms</h3>
-
+<h3>Selected Symptoms</h3>
 <ul>
 {% for s in user_symptoms %}
-<li>{{s}}</li>
+    <li>{{ s }}</li>
 {% endfor %}
 </ul>
 
+<br>
+<h3>Predicted Disease:</h3>
+<h2 style="color:#2d9cdb">{{ predicted_disease }}</h2>
+
+<h3>Confidence:</h3>
+<h2>{{ result.get('Top_3_Predictions', [['N/A',0]])[0][1] }}%</h2>
+
+<br><br>
+<p style="font-size:12px;color:red;">
+⚠ This is AI-generated medical prediction. Consult doctor for confirmation.
+</p>
 </div>
 
+<div class="container">
+
+<!-- SELECTED SYMPTOMS -->
+<div class="card">
+<h3>🧾 Selected Symptoms</h3>
+<ul>
+{% for s in user_symptoms %}
+<li>{{ s }}</li>
+{% endfor %}
+</ul>
+</div>
 
 <!-- TOP RESULT -->
-
 <div class="card summary">
-
 <div>
-<h2>Predicted Disease: <span style="color:#2d9cdb">{{predicted_disease}}</span></h2>
+<h2>Predicted Disease: <span style="color:#2d9cdb">{{ predicted_disease }}</span></h2>
 <br>
-<h3>Confidence: {{top3[0][1]}}%</h3>
+<h3>Confidence: {{ result.get('Top_3_Predictions', [['N/A',0]])[0][1] }}%</h3>
 <br>
 <h3>Other Possibilities</h3>
 
 {% set colors = ["#3b82f6","#10b981","#f59e0b"] %}
-
 {% for d,p in top3 %}
 <div style="margin-top:12px;">
-<b>{{d}} - {{p}}%</b>
-
+<b>{{ d }} - {{ p }}%</b>
 <div class="bar">
-<div class="fill"
-     style="width:{{p}}%; background:{{colors[loop.index0]}}">
+<div class="fill" style="width:{{ p }}%; background:{{ colors[loop.index0] }}"></div>
 </div>
-</div>
-
 </div>
 {% endfor %}
-
 </div>
 
 <!-- RIGHT SIDE CHART -->
@@ -176,12 +108,9 @@ background:#2d9cdb;color:white;font-weight:600;cursor:pointer;
 <h3 style="margin-bottom:10px;">Probability Chart</h3>
 <canvas id="chart"></canvas>
 </div>
-
 </div>
 
-
 <!-- DETAILS -->
-
 <div class="card">
 <div class="tabs">
 <div class="tab active" onclick="showTab('desc',this)">Description</div>
@@ -194,65 +123,44 @@ background:#2d9cdb;color:white;font-weight:600;cursor:pointer;
 
 <div class="content" id="content">
 <h3>Description</h3>
-<p>{{dis_des}}</p>
+<p>{{ dis_des }}</p>
 </div>
 </div>
 
-<!-- AI CHATBOT CARD -->
+<!-- AI CHATBOT -->
 <div class="card">
 <h2>💬 AI Medical Assistant</h2>
-<p>Ask anything about disease, symptoms, treatment or research</p>
+<p>Ask health-related questions or system-related queries.
+Example: symptoms, treatment, doctor, dataset, model, accuracy or project details.</p>
 
-<div id="chatbox" style="
-height:350px;
-overflow-y:auto;
-border:1px solid #e6ecf3;
-padding:15px;
-border-radius:10px;
-margin-top:15px;
-background:#f9fbff;"></div>
+<div id="chatbox" style="height:250px; overflow-y:auto; border:1px solid #e6ecf3; padding:15px; border-radius:10px; margin-top:15px; background:#f9fbff;"></div>
 
 <div style="display:flex;margin-top:15px;gap:10px;">
-<input id="userInput" type="text" placeholder="Ask about disease, symptoms..."
-style="flex:1;padding:12px;border-radius:8px;border:1px solid #ccc;">
-
+<input id="userInput" type="text" placeholder="Ask about disease, symptoms..." style="flex:1;padding:12px;border-radius:8px;border:1px solid #ccc;">
 <button onclick="sendMessage()">Send</button>
 </div>
 </div>
 
-
 </div>
 
 <script>
-const description = `{{dis_des}}`;
-const precautions = {{ dis_pre | tojson }};
-const medications = {{ dis_med | tojson }};
-const diets = {{ dis_diet | tojson }};
-const workouts = {{ dis_wrkout | tojson }};
-const doctor = `{{dis_doc}}`;
+// SAFE VARIABLES
+const medications = {{ dis_med | default([]) | tojson }};
+const precautions = {{ dis_pre | default([]) | tojson }};
+const diets = {{ dis_diet | default([]) | tojson }};
+const workout = {{ dis_workout | default({}) | tojson }};
+const doctor = {{ dis_doc | default("General Physician") | tojson }};
+const description = {{ dis_des | default("No description available") | tojson }};
 
-// chart
-const ctx=document.getElementById('chart');
-
-new Chart(ctx,{
+// CHART
+const ctx = document.getElementById('chart');
+new Chart(ctx, {
 type:'doughnut',
 data:{
-labels:[
-{% for d,p in top3 %}
-"{{d}}",
-{% endfor %}
-],
+labels: top3_labels = [{% for d,p in top3 %}"{{d}}",{% endfor %}],
 datasets:[{
-data:[
-{% for d,p in top3 %}
-{{p}},
-{% endfor %}
-],
-backgroundColor:[
-"#3b82f6",   // main disease (blue)
-"#10b981",   // green
-"#f59e0b"    // orange
-]
+data:[{% for d,p in top3 %}{{p}},{% endfor %}],
+backgroundColor:["#3b82f6","#10b981","#f59e0b"]
 }]
 },
 options:{
@@ -262,125 +170,82 @@ plugins:{legend:{position:'bottom'}}
 }
 });
 
-// tab switching
-function showTab(tab,el){
+// TAB FUNCTION
+function showTab(tab, el){
 document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
 el.classList.add('active');
 
-let html="";
+let html = "";
 
-if(tab=="desc"){
-html=`<h3>Description</h3><p>{{dis_des}}</p>`;
+if(tab==="desc"){
+html = `<h3>Description</h3><p>${description}</p>`;
+} else if(tab==="pre"){
+html = `<h3>Precautions</h3><ul>`;
+precautions.forEach(p => { if(p) html += `<li>${p}</li>`; });
+html += `</ul>`;
+} else if(tab==="med"){
+html = `<h3>Medication</h3><ul>`;
+medications.forEach(m => { if(m) html += `<li>${m}</li>`; });
+html += `</ul>`;
+} else if(tab==="diet"){
+html = `<h3>Diet</h3><ul>`;
+diets.forEach(d => { if(d) html += `<li>${d}</li>`; });
+html += `</ul>`;
+} else if(tab==="work"){
+html = `<h3>Workout</h3><ul>`;
+if(workout.Exercises){
+workout.Exercises.forEach(e => { if(e) html += `<li>${e}</li>`; });
 }
-if(tab=="pre"){
-html=`<h3>Precautions</h3><ul>
-{% for i in dis_pre %}
-<li>{{i}}</li>
-{% endfor %}
-</ul>`;
-}
-if(tab=="med"){
-html="<h3>Medication</h3><ul>";
-
-for(let i=0;i<medications.length;i++){
-  if(medications[i]){
-    html += "<li>"+medications[i]+"</li>";
-  }
-}
-
-html+="</ul>";
-}
-
-if(tab=="diet"){
-html="<h3>Diet</h3><ul>";
-
-for(let i=0;i<diets.length;i++){
-  if(diets[i]){
-    html += "<li>"+diets[i]+"</li>";
-  }
+html += `</ul>`;
+html += `<p>Intensity: ${workout.Intensity || 'Not specified'}</p>`;
+html += `<p>Duration: ${workout.Duration || 'Not specified'}</p>`;
+html += `<p>Frequency: ${workout.Frequency || 'Not specified'}</p>`;
+html += `<p>Notes: ${workout.Notes || 'No additional notes'}</p>`;
+} else if(tab==="doc"){
+html = `<h3>Recommended Specialist</h3><p><b>${doctor}</b></p>`;
 }
 
-html+="</ul>";
+document.getElementById("content").innerHTML = html;
 }
 
-if(tab=="work"){
-html=`<h3>Workout</h3><ul>
-{% for i in dis_wrkout %}
-<li>{{i}}</li>
-{% endfor %}
-</ul>`;
-}
-if(tab=="doc"){
-html=`<h3>Recommended Specialist</h3><p><b>{{dis_doc}}</b></p>`;
-}
-
-document.getElementById("content").innerHTML=html;
-}
-
+// CHATBOT
 async function sendMessage(){
-
 let input = document.getElementById("userInput");
 let msg = input.value.trim();
 if(msg==="") return;
 
 let chatbox = document.getElementById("chatbox");
-
-// show user message
-chatbox.innerHTML += `
-<div style="text-align:right;margin:10px 0;">
-<span style="background:#2d9cdb;color:white;padding:8px 12px;border-radius:12px;">
-${msg}
-</span>
-</div>`;
-
-// clear input
+chatbox.innerHTML += `<div style="text-align:right;margin:10px 0;"><span style="background:#2d9cdb;color:white;padding:8px 12px;border-radius:12px;">${msg}</span></div>`;
 input.value="";
-
-// loading
 chatbox.innerHTML += `<div id="typing">AI typing...</div>`;
 chatbox.scrollTop = chatbox.scrollHeight;
 
-// send to flask
-let res = await fetch("/chatbot",{
+let res = await fetch("/chatbot", {
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({message:msg})
 });
-
 let data = await res.json();
 document.getElementById("typing").remove();
 
-// show ai reply
-chatbox.innerHTML += `
-<div style="text-align:left;margin:10px 0;">
-<span style="background:#eef3f9;padding:10px 14px;border-radius:12px;display:inline-block;">
-${data.reply}
-</span>
-</div>`;
-
+chatbox.innerHTML += `<div style="text-align:left;margin:10px 0;"><span style="background:#eef3f9;padding:10px 14px;border-radius:12px;display:inline-block;">${data.reply}</span></div>`;
 chatbox.scrollTop = chatbox.scrollHeight;
 }
+
+// DOWNLOAD REPORT
 function downloadReport(){
-
-    let printContent = document.getElementById("printReport").innerHTML;
-    let original = document.body.innerHTML;
-
-    document.body.innerHTML = printContent;
-    window.print();
-    document.body.innerHTML = original;
-
-    location.reload(); // reload page after print
+let printContent = document.getElementById("printReport").innerHTML;
+let original = document.body.innerHTML;
+document.body.innerHTML = printContent;
+window.print();
+document.body.innerHTML = original;
+location.reload();
 }
 
-
-// send when press ENTER
+// ENTER KEY SEND
 document.getElementById("userInput").addEventListener("keypress", function(e){
-    if(e.key === "Enter"){
-        e.preventDefault();   // stop page refresh
-        sendMessage();        // call your function
-    }
+if(e.key === "Enter"){ e.preventDefault(); sendMessage(); }
 });
-
 </script>
 
 </body>

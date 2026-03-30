@@ -1,197 +1,218 @@
-from flask import Flask, request, render_template, jsonify, session
-import pandas as pd
+from flask import Flask, render_template, request
 import numpy as np
-import pickle
+import pandas as pd
+import joblib
 
-
-
-
-
-# flask app
 app = Flask(__name__)
-app.secret_key = "supersecret123"
 
-
-
-
-
-
-
-# LOAD TRAINED MODEL
 # ===============================
-model = pickle.load(open("models/model.pkl","rb"))
-le = pickle.load(open("models/label_encoder.pkl","rb"))
-cols = pickle.load(open("models/columns.pkl","rb"))
-
-# load database========================================
-
-symtoms_df = pd.read_csv('datasets/symtoms_df.csv')
-
-precautions_df = pd.read_csv("datasets/precautions_df.csv")
-workout_df = pd.read_csv("datasets/workout_df.csv")
-description_df = pd.read_csv("datasets/description.csv")
-medications_df = pd.read_csv("datasets/medications.csv")
-diets_df = pd.read_csv("datasets/diets.csv")
-doctor_df = pd.read_csv("datasets/Doctor.csv")
-
-
-# HELPER FUNCTION
+# Load ML Components
 # ===============================
-import ast
+model = joblib.load("models/disease_prediction_model.pkl")
+label_encoder = joblib.load("models/label_encoder.pkl")
+feature_columns = joblib.load("models/feature_columns.pkl")
 
-def helper(disease):
-    # clean disease name
-    disease_clean = disease.strip().lower()
-    description_df["Disease"] = description_df["Disease"].str.strip().str.lower()
+description_df = pd.read_csv("datasets/Description_df.csv")
+precautions_df = pd.read_csv("datasets/Precaution_df.csv")
+workout_df = pd.read_csv("datasets/Workouts_df.csv")
+medication_df = pd.read_csv("datasets/Medications_df.csv")
+diet_df = pd.read_csv("datasets/Diets_df.csv")
+doctor_df = pd.read_csv("datasets/doctors.csv")
 
-    desc_row = description_df[description_df["Disease"] == disease_clean]["Description"]
 
-    if len(desc_row) > 0:
-        desc = desc_row.values[0]
 
-        # remove extra disease name if repeated
-        if "," in desc:
-            desc = desc.split(",", 1)[1]
-
-        desc = desc.replace('"', "").strip()
-    else:
-        desc = "No description available."
-
-    # precaution
-    precaution = precautions_df[precautions_df["Disease"] == disease].iloc[:,1:].values.flatten().tolist()
-
-    # medicine
-    med_row = medications_df[medications_df["Disease"] == disease]["Medication"]
-
-    if len(med_row) > 0:
-        med_text = med_row.values[0]
-
-        # convert string list -> real list
-        if isinstance(med_text, str) and med_text.startswith("["):
-            medicine = ast.literal_eval(med_text)
-        else:
-            medicine = [med_text]
-    else:
-        medicine = ["No medication found"]
-
-    # diet
-    diet_row = diets_df[diets_df["Disease"] == disease]["Diet"]
-
-    if len(diet_row) > 0:
-        diet_text = diet_row.values[0]
-
-        if isinstance(diet_text, str) and diet_text.startswith("["):
-            diet = ast.literal_eval(diet_text)
-        else:
-            diet = [diet_text]
-    else:
-        diet = ["No diet found"]
-
-    # workout
-    workout = workout_df[workout_df["disease"] == disease]["workout"].tolist()
-
-    # doctor specialization
-    doc = doctor_df[doctor_df["Disease"] == disease]["Specialization"]
-    doc = doc.values[0] if len(doc)>0 else "General Physician"
-
-    return desc, precaution, medicine, diet, workout, doc
-# PREDICT FUNCTION
 # ===============================
-def predict_disease(symptoms_list):
+# Prediction Function
+# ===============================
+def predict_and_recommend(symptom_list):
 
-    input_vector = [0]*len(cols)
+    # # Create empty input vector
+    feature_columns = joblib.load("models/feature_columns.pkl")
+    input_data = [0] * len(feature_columns)
 
-    for s in symptoms_list:
-        s = s.strip()
-        if s in cols:
-            idx = cols.index(s)
-            input_vector[idx] = 1
+    for symptom in symptom_list:
+        if symptom in feature_columns:
+            index = feature_columns.get_loc(symptom)
+            input_data[index] = 1
 
-    input_array = np.array(input_vector).reshape(1,-1)
+    # Convert to DataFrame
+    input_df = pd.DataFrame([input_data], columns=feature_columns)
 
-    pred = model.predict(input_array)[0]
-    disease = le.inverse_transform([pred])[0]
+    # ===============================
+    # Model Prediction (CLEAN VERSION)
+    # ===============================
 
-    probs = model.predict_proba(input_array)[0]
-    top3_idx = probs.argsort()[-3:][::-1]
+    prediction = model.predict(input_df)[0]
+    probabilities = model.predict_proba(input_df)[0]
+
+    # Main predicted disease
+    disease = label_encoder.inverse_transform([prediction])[0]
+    confidence = float(round(max(probabilities) * 100, 2))
+
+    # ===============================
+    # Top 3 Predictions (CORRECT)
+    # ===============================
+
+    top3_idx = np.argsort(probabilities)[::-1][:3]
 
     top3 = []
     for i in top3_idx:
-        d = le.inverse_transform([i])[0]
-        p = round(probs[i]*100,2)
-        top3.append((d,p))
+        encoded_label = model.classes_[i]  # Correct mapping
+        disease_name = label_encoder.inverse_transform([encoded_label])[0]
+        prob = float(round(probabilities[i] * 100, 2))
+        top3.append((disease_name, prob))
 
-    return disease, top3
+    # ===============================
+    # Description
+    # ===============================
+    desc_row = description_df[description_df['Disease'] == disease]
+    description = "No description available."
+    if len(desc_row) > 0:
+        description = desc_row['Description'].values[0]
+        if description:
+            description = description.replace(f"{disease},", "").replace('"', '').strip()
+
+    # ===============================
+    # Medication
+    # ===============================
+    med_row = medication_df[medication_df['Disease'] == disease]
+    medication = []
+    if len(med_row) > 0:
+        med_str = med_row['Medication'].values[0]
+        if med_str:
+            import ast
+            try:
+                medication = ast.literal_eval(med_str)
+            except:
+                medication = [med_str]
+
+    # ===============================
+    # Precautions
+    # ===============================
+    precaution_row = precautions_df[precautions_df['Disease'] == disease]
+    precautions = []
+    if len(precaution_row) > 0:
+        precautions = precaution_row[
+            ['Precaution_1', 'Precaution_2', 'Precaution_3', 'Precaution_4']
+        ].values.flatten().tolist()
+        precautions = [p for p in precautions if pd.notna(p)]
+
+    # ===============================
+    # Workout
+    # ===============================
+    workout_details = {}
+    workout_row = workout_df[workout_df['Disease'] == disease]
+    if len(workout_row) > 0:
+        row = workout_row.iloc[0]
+        exercises = [row.get(f'Exercise_{i}') for i in range(1, 5)]
+        exercises = [e for e in exercises if pd.notna(e)]
+        workout_details = {
+            "Exercises": exercises,
+            "Intensity": row['Intensity'] if pd.notna(row['Intensity']) else "Not specified",
+            "Duration": row['Duration'] if pd.notna(row['Duration']) else "Not specified",
+            "Frequency": row['Frequency'] if pd.notna(row['Frequency']) else "Not specified",
+            "Notes": row['Notes'] if pd.notna(row['Notes']) else "No additional notes"
+        }
+
+    # ===============================
+    # Diets
+    # ===============================
+    diet_row = diet_df[diet_df['Disease'] == disease]
+    diets = []
+    if len(diet_row) > 0:
+        diets = [d for d in diet_row.iloc[0][['Diet_1','Diet_2','Diet_3','Diet_4']] if pd.notna(d)]
+
+    # ===============================
+    # Doctor / Specialist
+    # ===============================
+    doctor_row = doctor_df[doctor_df['Disease'] == disease]
+    doctor = "General Physician"
+    if len(doctor_row) > 0 and 'Specialization' in doctor_row.columns:
+        doc_name = doctor_row['Specialization'].values[0]
+        if pd.notna(doc_name) and doc_name != "":
+            doctor = doc_name
+
+    # ===============================
+    # Low Confidence Handling
+    # ===============================
+    if confidence < 40:
+        disease = "Unknown / Low Confidence"
+        confidence = float(round(max(probabilities) * 100, 2))
+
+    # ===============================
+    # Return All Details
+    # ===============================
+    return {
+        "Disease": disease,
+        "Confidence": confidence,
+        "Top_3_Predictions": top3,
+        "Description": description,
+        "Medication": medication,
+        "Precautions": precautions,
+        "Workout": workout_details,
+        "Diets": diets,
+        "Doctor": doctor
+    }
 
 
-# ================= ROUTES =================
+# ===============================
+# Routes
+# ===============================
 @app.route('/')
-@app.route('/index')
-def index():
+def home():
     return render_template("index.html")
 
 
 @app.route('/predict', methods=['POST'])
-
 def predict():
 
-    symptoms = request.form.get("symptoms")
+    symptoms = request.form.getlist('symptoms')
 
     if not symptoms:
-        return render_template("index.html", message="Enter symptoms")
+        return render_template("index.html",
+                               error="Please select at least one symptom.")
 
-    user_symptoms = [s.strip().lower() for s in symptoms.split(",")]
+    result = predict_and_recommend(symptoms)
 
-    if len(user_symptoms) < 3:
-        return render_template("index.html", message="Enter at least 3 symptoms")
+    # Confidence safety rule
+    if result["Confidence"] < 40:
+        result["Warning"] = "Prediction confidence is low. Please consult a doctor."
 
-    predicted_disease, top3 = predict_disease(user_symptoms)
-
-    # save for chatbot
-    session["predicted_disease"] = predicted_disease
-    session["confidence"] = top3[0][1]
-    session["top3"] = top3
-
-    desc, precaution, medicine, diet, workout, doctor = helper(predicted_disease)
-
-    print("Medicine:", medicine)
-    print("Diet:", diet)
-    print("Precaution:", precaution)
-    print("Workout:", workout)
-    print("Doctor:", doctor)
-
+    result["Disclaimer"] = (
+        "This AI system provides prediction based on symptoms. "
+        "It does not replace professional medical advice."
+    )
     return render_template(
         "result.html",
-        predicted_disease=predicted_disease,
-        top3=top3,
-        user_symptoms=user_symptoms,
-        dis_des=desc,
-        dis_pre=precaution,
-        dis_med=medicine,
-        dis_diet=diet,
-        dis_wrkout=workout,
-        dis_doc=doctor
+        result=result,
+        top3=result.get('Top_3_Predictions', []),
+        user_symptoms=symptoms,
+        predicted_disease=result.get('Disease', 'Unknown'),
+        dis_med=result.get('Medication', []),
+        dis_pre=result.get('Precautions', []),
+        dis_diet=result.get('Diets', []),
+        dis_workout=result.get('Workout', {}),
+        dis_doc=result.get('Doctor', 'General Physician'),
+        dis_des=result.get('Description', 'No description available.')
     )
+
 
 @app.route('/about')
 def about():
     return render_template("about.html")
 
-@app.route('/contact', methods=['GET','POST'])
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
         name = request.form.get("name")
         email = request.form.get("email")
         message = request.form.get("message")
 
-        print("NEW MESSAGE:", name, email, message)  # optional save later
+        print("NEW MESSAGE:", name, email, message)
 
-        # show thank you message
-        return render_template("contact.html", success=True)
+        return render_template("contact.html", success=True)  # return after POST
 
-    return render_template("contact.html")
-
-
+    return render_template("contact.html", success=False)
 @app.route('/developer')
 def developer():
     return render_template("developer.html")
@@ -199,42 +220,48 @@ def developer():
 @app.route('/blog')
 def blog():
     return render_template("blog.html")
-# ================= AI CHATBOT ROUTE =================
-import requests
-from flask import request, jsonify
-
-
-# ================= SMART OFFLINE CHATBOT =================
-from chatbot_engine import medical_chatbot
-
-@app.route("/chatbot", methods=["POST"])
-def chatbot():
-
-    user_msg = request.json.get("message")
-
-    disease = session.get("predicted_disease","")
-    confidence = session.get("confidence","")
-
-    # get details again
-    desc, precaution, medicine, diet, workout, doctor = helper(disease)
-
-    reply = medical_chatbot(
-        user_msg,
-        disease,
-        confidence,
-        desc,
-        precaution,
-        medicine,
-        diet,
-        workout,
-        doctor
-    )
-
-    return jsonify({"reply": reply})
-
-
-
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
+
+@app.route('/')
+def home():
+    return render_template("home.html", breadcrumb=[
+        {"name": "Home", "url": "/"}
+    ])
+
+
+@app.route('/about')
+def about():
+    return render_template("about.html", breadcrumb=[
+        {"name": "Home", "url": "/"},
+        {"name": "About", "url": "/about"}
+    ])
+
+
+def contact():
+    breadcrumb = [
+        {"name": "Home", "url": "/"},
+        {"name": "Contact", "url": "/contact"}
+    ]
+
+    if request.method == 'POST':
+        return render_template("contact.html", success=True, breadcrumb=breadcrumb)
+
+    return render_template("contact.html", success=False, breadcrumb=breadcrumb)
+
+
+@app.route('/developer')
+def developer():
+    return render_template("developer.html", breadcrumb=[
+        {"name": "Home", "url": "/"},
+        {"name": "Developer", "url": "/developer"}
+    ])
+
+
+@app.route('/blog')
+def blog():
+    return render_template("blog.html", breadcrumb=[
+        {"name": "Home", "url": "/"},
+        {"name": "Blog", "url": "/blog"}
+    ])
+

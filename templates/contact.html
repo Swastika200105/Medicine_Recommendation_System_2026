@@ -191,19 +191,9 @@ Need help or collaboration? Contact our team anytime.
 Send Message
 </button>
 </form>
-    {% if success %}
-<div style="
-background:#d1fae5;
-color:#065f46;
-padding:14px;
-margin-top:20px;
-border-radius:10px;
-font-weight:600;
-text-align:center;">
-✅ Thank you for your suggestion! We appreciate your feedback.
-</div>
+{% if success %}
+    <p style="color: green;">Thank you! Your message has been sent.</p>
 {% endif %}
-
 
 </div>
 </div>

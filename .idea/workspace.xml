@@ -4,38 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d312d23-b497-45c4-9ba7-ebd89ed4d45e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Medicine Recommendation System.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.venv/Scripts/python.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.venv/Scripts/python3.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.venv/Scripts/python314.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.venv/Scripts/pythonw.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.venv/pyvenv.cfg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chatbot_engine.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/Doctor.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/Symptom-severity.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/Training.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/description.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/diets.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/medications.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/precautions_df.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/symtoms_df.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/workout_df.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/Medicine Recommendation system.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/columns.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/about.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/blog.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/contact.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/developer.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/result.html" afterDir="false" />
+    <list default="true" id="1d312d23-b497-45c4-9ba7-ebd89ed4d45e" name="Changes" comment="first commit">
+      <change afterPath="$PROJECT_DIR$/datasets/Description_df.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datasets/Precaution_df.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datasets/Workouts_df.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datasets/symptoms_df.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/MRS_MLTraining.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/Scripts/python3.dll" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/Scripts/python3.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/Scripts/python314.dll" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/Scripts/python314.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatbot_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot_engine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/Doctor.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/Symptom-severity.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/Training.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/Training.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/description.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/diets.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/medications.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/precautions_df.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/symtoms_df.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/workout_df.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Medicine Recommendation system.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/columns.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contact.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/developer.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/developer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/result.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/result.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,12 +41,25 @@
       <list>
         <option value="HTML File" />
         <option value="Python Script" />
+        <option value="Jupyter Notebook" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Swastika200105&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Swastika200105/Medicine_Recommendation_System_2026.git&quot;,
+    &quot;accountId&quot;: &quot;ac974816-093e-4474-a0d7-c9aac4ad57e9&quot;
+  }
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -64,26 +71,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/User/PycharmProjects/Medicine Recommendation System-YT/datasets&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/User/Desktop/Medicine Recommendation System-YT/datasets",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Desktop\Medicine Recommendation System-YT\datasets" />
+      <recent name="C:\Users\User\Desktop\Medicine Recommendation System-YT\models" />
       <recent name="C:\Users\User\PycharmProjects\Medicine Recommendation System-YT\datasets" />
       <recent name="C:\Users\User\PycharmProjects\Medicine Recommendation System-YT\datastes" />
       <recent name="C:\Users\User\PycharmProjects\Medicine Recommendation System-YT" />
-      <recent name="C:\Users\User\PycharmProjects\Medicine Recommendation System\static" />
-      <recent name="C:\Users\User\PycharmProjects\Medicine Recommendation System\models" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Desktop\Medicine Recommendation System-YT\models" />
+      <recent name="C:\Users\User\Desktop\Medicine Recommendation System-YT" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -101,6 +113,19 @@
       <option name="presentableId" value="Default" />
       <updated>1764666515120</updated>
     </task>
+    <task id="LOCAL-00001" summary="first commit">
+      <option name="closed" value="true" />
+      <created>1770912339493</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1770912339493</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="first commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="first commit" />
   </component>
 </project>

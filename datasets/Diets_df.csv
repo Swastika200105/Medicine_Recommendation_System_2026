@@ -1,0 +1,102 @@
+Disease,Diet_1,Diet_2,Diet_3,Diet_4
+AIDS,"High biological value protein (eggs, fish, legumes)",Energy-dense whole grains,Micronutrient-rich fruits and vegetables,Maintain strict food hygiene
+Acne,Low glycemic index carbohydrates,Omega-3 fatty acids,Limit high-sugar foods,Reduce excessive dairy intake
+Acute_kidney_injury,Protein adjusted to renal function,Restrict sodium intake,Monitor potassium and phosphorus,Fluid intake per medical advice
+Alzheimer disease,Mediterranean diet pattern,Leafy greens and berries,Omega-3 rich fish and nuts,Limit saturated fat and processed foods
+Anemia,Iron-rich foods (heme and non-heme),Vitamin C to enhance absorption,Folate and vitamin B12 sources,Avoid tea/coffee with meals
+Ankylosing_spondylitis,Anti-inflammatory diet,Omega-3 fatty acids,Adequate calcium and vitamin D,Maintain healthy body weight
+Anxiety disorder,Magnesium-rich foods,Complex carbohydrates for serotonin balance,Omega-3 fatty acids,Limit caffeine and refined sugar
+Appendicitis (Post-Surgery),Clear liquids in acute phase,Soft low-residue diet post-surgery,Gradual reintroduction of fiber,Adequate hydration
+Asthma,Antioxidant-rich fruits and vegetables,Omega-3 fatty acids,Avoid known food triggers,Maintain optimal weight
+Bell palsy,Soft nutrient-dense foods,Vitamin B-complex rich diet,Adequate hydration,Balanced macronutrient intake
+Bronchitis,Warm fluids and broths,Vitamin C-rich fruits,Light easily digestible meals,Avoid smoking exposure
+COVID-19 (Recovery),High protein for recovery,"Vitamin C, D, and zinc-rich foods",Adequate hydration,Small frequent meals for appetite loss
+Cataract,Antioxidant-rich vegetables,Vitamin C and E intake,"Carotenoid-rich foods (carrots, pumpkin)",Omega-3 fatty acids
+Celiac_disease,Strict lifelong gluten-free diet,"Rice, millet, quinoa as alternatives","Avoid wheat, barley, rye",Monitor for nutrient deficiencies
+Cervical_spondylosis,Anti-inflammatory foods,Adequate calcium and vitamin D,Weight management,Limit processed foods
+Cholera,Oral rehydration salts (ORS),Electrolyte replacement,Soft easily digestible foods,Avoid fatty or spicy meals
+Chronic Obstructive Pulmonary Disease (COPD),Small frequent meals,High-protein moderate-fat diet,Soft foods if dyspneic,Adequate hydration
+Chronic kidney disease,Controlled protein intake,"Restrict sodium, potassium, phosphorus",Fluid monitoring,Individualized diet planning
+Chronic_cholestasis,Low-fat diet,Supplement fat-soluble vitamins,Medium-chain triglycerides if advised,Frequent small meals
+Cirrhosis,Low sodium to prevent ascites,Moderate protein unless encephalopathy,Frequent small meals,Avoid alcohol completely
+Common Cold,Warm fluids and soups,Vitamin C-rich fruits,Light balanced meals,Adequate hydration
+Conjunctivitis,Hydrating fruits and vegetables,Omega-3 fatty acids,Avoid allergens in food if allergic,Adequate fluids
+Coronary artery disease,Low saturated and trans fat diet,High fiber intake,Limit sodium,"Increase fruits, vegetables, whole grains"
+Crohn disease,Low-residue diet during flare-ups,Small frequent meals,Avoid trigger foods,Adequate hydration
+Deep_vein_thrombosis (DVT),Maintain adequate hydration,Limit vitamin K fluctuations if on anticoagulants,Balanced fruits and vegetables,Reduce excessive saturated fats
+Dengue,High fluid intake,Protein-rich foods for recovery,Soft digestible meals,Maintain electrolyte balance
+Depression,Omega-3 rich fish,Whole grains for stable glucose,Leafy greens and legumes,Limit ultra-processed foods
+Diabetes mellitus,Low glycemic index foods,High dietary fiber,Controlled carbohydrate portions,Limit refined sugars
+Eczema,Anti-inflammatory foods,Omega-3 fatty acids,Avoid allergenic foods,Maintain hydration
+Encephalitis,High-calorie high-protein diet for recovery,Soft foods if swallowing difficulty,Adequate hydration,Small frequent meals
+Endocarditis,Soft nutrient-rich diet,Adequate protein intake,Adequate fluids,Avoid raw foods
+Endometriosis,Anti-inflammatory diet,Omega-3 fatty acids,Limit red meat and processed foods,Increase fruits and vegetables
+Epilepsy,Ketogenic diet if medically indicated,Regular meal timing,Avoid prolonged fasting,Adequate hydration
+Erectile_dysfunction,Mediterranean diet pattern,Omega-3 fatty acids,Limit saturated fats and processed foods,Adequate fruits and vegetables
+Food_poisoning,Hydration with ORS,Soft bland diet,Small frequent meals,Avoid fatty and spicy foods
+GERD,Small frequent meals,"Avoid trigger foods (spicy, acidic, fatty)",Avoid lying down after meals,Maintain healthy weight
+Gallbladder_infection,Low-fat diet,Small frequent meals,Adequate hydration,Avoid spicy and fried foods
+Gallstones,Low-fat diet,High-fiber foods,Adequate hydration,Small frequent meals
+Gastroenteritis,Oral rehydration salts (ORS),Bland low-fat foods,Avoid dairy if lactose intolerant,Gradual reintroduction of normal diet
+Glaucoma,Antioxidant-rich fruits and vegetables,Omega-3 fatty acids,Limit excessive caffeine,Maintain hydration
+Gout,Low-purine diet,Limit red meat and organ meats,Increase water intake,Low-fat dairy products
+Guillain-Barre_syndrome,High-calorie high-protein diet,Soft easy-to-swallow foods,Adequate hydration,Small frequent meals
+HIV infection,High biological value protein,Energy-dense whole grains,Micronutrient-rich fruits and vegetables,Maintain strict food hygiene
+Heart attack,Low saturated and trans fat diet,High fiber intake,Reduce sodium,"Increase fruits , vegetables ,whole grains"
+Heart failure,Low sodium diet,Moderate protein intake,Fluid management,Adequate potassium-rich foods
+Heatstroke,High fluid intake,Electrolyte replacement,Light meals,Avoid alcohol and caffeine
+Hepatitis A,High carbohydrate diet,Moderate protein intake,Low-fat meals,Avoid alcohol
+Hepatitis B,High carbohydrate diet,Moderate protein intake,Low-fat meals,Avoid alcohol
+Hepatitis C,High carbohydrate diet,Moderate protein intake,Low-fat meals,Avoid alcohol
+Hepatitis E,High carbohydrate diet,Moderate protein intake,Low-fat meals,Avoid alcohol
+Hypertension,Low sodium diet,DASH diet principles,Increase potassium-rich foods,Limit processed foods
+Hyperthyroidism,High calorie high protein diet,Calcium-rich foods,Vitamin D support,Frequent small meals
+Hypoglycemia,Frequent balanced meals,Include complex carbs with protein,Avoid high-sugar spikes,Regular meal timing
+Hypothermia,Warm nutrient-rich fluids,High-calorie foods,Small frequent meals,Monitor electrolytes
+Hypothyroidism,Adequate iodine intake,Selenium-rich foods,High fiber diet,Limit goitrogen excess
+Impetigo,Hydrating foods,Protein-rich diet,Vitamin C rich fruits,Avoid sugary foods
+Influenza(FLU),Warm fluids and soups,Light balanced meals,Vitamin C rich fruits,Adequate hydration
+Irritable bowel syndrome,Low FODMAP foods,Small frequent meals,Avoid trigger foods,Adequate hydration
+Kidney stones,Increase fluid intake,Reduce sodium intake,Limit oxalate foods if indicated,Moderate animal protein
+Laryngitis,Soft easy-to-swallow foods,Hydrating fluids,Avoid irritants like alcohol and caffeine,Adequate fruits and vegetables
+Leukemia,High-protein high-calorie diet,Vitamin and mineral-rich foods,Adequate hydration,Small frequent meals
+Lymphoma,High-protein high-calorie diet,Vitamin-rich foods,Adequate hydration,Small frequent meals
+Malaria,High-calorie diet,Adequate protein intake,Plenty of fluids,Easily digestible foods
+Measles,High-calorie diet,Vitamin A-rich foods,Hydration,Soft easily digestible foods
+Meningitis,High-calorie high-protein diet,Soft foods if swallowing difficulty,Adequate hydration,Small frequent meals
+Migraine,Regular meals to avoid hypoglycemia,Avoid trigger foods,Limit caffeine,Stay hydrated
+Multiple_sclerosis,High-protein diet,Omega-3 fatty acids,Anti-inflammatory foods,Adequate vitamin D
+Mumps,Soft foods,Adequate hydration,Vitamin C-rich fruits,Avoid hard chewy foods
+Nephrotic_syndrome,Low-sodium diet,Controlled protein intake,Adequate calories,Healthy fats
+Obesity,Calorie-controlled balanced diet,High fiber foods,Limit sugar and refined carbs,Adequate protein intake
+Osteoarthritis,Weight management diet,Omega-3 fatty acids,Anti-inflammatory foods,Adequate vitamin D
+Osteoporosis,Calcium-rich foods,Vitamin D sufficiency,Adequate protein intake,Limit excess caffeine
+Otitis media,Soft easily digestible foods,Adequate hydration,Vitamin C-rich fruits,Avoid irritants
+Pancreatitis,Low-fat diet,Small frequent meals,Avoid alcohol,Gradual nutrient reintroduction
+Parkinson disease,High-fiber foods,Adequate hydration,Soft foods if swallowing difficulty,Vitamin-rich foods
+Peptic ulcer disease,Non-irritating soft foods,Avoid spicy acidic foods,Limit caffeine and alcohol,Small frequent meals
+Pericarditis,Soft nutrient-rich diet,Adequate protein intake,Adequate fluids,Avoid inflammatory foods
+Pneumonia,High protein intake,Vitamin C rich fruits,Adequate fluids,Small frequent meals
+Polycystic_ovary_syndrome,Low glycemic index foods,High fiber diet,Omega-3 rich foods,Limit processed foods
+Prostate_enlargement,High-fiber foods,Adequate fluids,Limit red meat,Include fruits and vegetables
+Psoriasis,Anti-inflammatory diet,Omega-3 fatty acids,Maintain healthy weight,Limit alcohol
+Pulmonary_embolism,Maintain adequate hydration,Balanced diet with fruits and vegetables,Limit saturated fats,Maintain healthy weight
+Rabies,High-calorie diet,High-protein diet,Adequate fluids,Soft easy-to-swallow foods
+Rheumatoid arthritis,Omega-3 rich fish,Anti-inflammatory dietary pattern,Maintain optimal weight,Limit processed foods
+Rubella,High-calorie diet,Vitamin-rich foods,Adequate hydration,Soft easily digestible foods
+Schizophrenia,Balanced diet,Omega-3 fatty acids,High-fiber foods,Limit refined sugars
+Sepsis,High-calorie high-protein diet,Electrolyte-rich fluids,Small frequent meals,Avoid alcohol
+Sickle_cell_disease,High-protein high-calorie diet,Hydration,Iron-rich foods (as advised),Folate-rich foods
+Sinusitis,Hydrating fluids,Vitamin C-rich foods,Light balanced meals,Avoid allergens if triggered
+Stroke,Low sodium intake,High fiber foods,Limit saturated fat,Increase fruits and vegetables
+Systemic_lupus_erythematosus,Anti-inflammatory foods,Adequate protein intake,Adequate vitamin D,Limit processed foods
+Tetanus,High-calorie diet,High-protein intake,Soft foods if swallowing difficulty,Adequate hydration
+Thalassemia,Folate-rich foods,Limit iron overload if advised,Calcium and vitamin D support,Balanced nutrition
+Tonsillitis,Soft foods,Warm fluids,Avoid irritant foods,Vitamin C-rich fruits
+Tuberculosis,High protein high-calorie diet,Vitamin-rich foods,Frequent meals,Adequate hydration
+Tuberculosis meningitis,High-calorie diet,High-protein intake,Soft digestible foods,Electrolyte balance
+Typhoid,Soft low-fiber diet,Boiled safe foods only,High-calorie intake,Avoid raw foods
+Ulcerative colitis,Low-residue diet during flare,Small frequent meals,Avoid trigger foods,Maintain hydration
+Urinary tract infection,Increase water intake,Vitamin C sources,Cranberry if appropriate,Avoid bladder irritants
+Varicose veins,High fiber diet,Low sodium intake,Maintain healthy weight,Adequate hydration
+Vertigo,Regular small meals,Limit caffeine,Stay hydrated,Avoid alcohol

@@ -24,7 +24,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-           <a class="nav-link active" href="{{ url_for('index') }}">Home</a>
+           <a class="nav-link active" href="{{ url_for('home') }}">Home</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ url_for('about') }}">About</a>
@@ -84,6 +84,7 @@
     <div class="col-md-6 text-center">
       <img src="{{ url_for('static', filename='dashboard.png') }}"
            class="img-fluid rounded shadow"
+           style="width: 450px; height: auto;"
            alt="Illustration of symptoms input">
     </div>
 
@@ -95,83 +96,83 @@
       <div class="symptom-list">
 
         <label class="symptom-item">
-          <input type="checkbox" value="mild_fever">
+          <input type="checkbox" name="symptoms" value="mild_fever">
           <span>Mild Fever</span>
         </label>
 
         <label class="symptom-item">
-          <input type="checkbox" value="headache">
+          <input type="checkbox" name="symptoms" value="headache">
            <span>Headache</span>
         </label>
 
         <label class="symptom-item">
-            <input type="checkbox" value="stomach_pain">
+            <input type="checkbox" name="symptoms" value="stomach_pain">
             <span>Stomach Pain</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="cough">
+          <input type="checkbox" name="symptoms" value="cough">
           <span>Cough</span>
         </label>
 
         <label class="symptom-item">
-          <input type="checkbox" value="fatigue">
+          <input type="checkbox" name="symptoms" value="fatigue">
           <span>Fatigue</span>
         </label>
 
         <label class="symptom-item">
-          <input type="checkbox" value="back_pain">
+          <input type="checkbox" name="symptoms" value="back_pain">
           <span>Back Pain</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="nausea">
+          <input type="checkbox" name="symptoms" value="nausea">
           <span>Nausea</span>
         </label>
           <label class="symptom-item">
-          <input type="checkbox" value="itching">
+          <input type="checkbox" name="symptoms" value="itching">
           <span>Itching</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="skin_rash">
+          <input type="checkbox" name="symptoms" value="skin_rash">
           <span>Skin Rashes</span>
         </label>
           <label class="symptom-item">
-              <input type="checkbox" value="watering_from_eyes">
+              <input type="checkbox" name="symptoms" value="watering_from_eyes">
               <span>Watering from eyes</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="nodal_skin_eruptions">
+          <input type="checkbox" name="symptoms" value="nodal_skin_eruptions">
           <span>Nodal skin eruptions</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="shivering">
+          <input type="checkbox" name="symptoms" value="shivering">
           <span>Shivering</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="chills">
+          <input type="checkbox" name="symptoms" value="chills">
           <span>Chills</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="continuous_sneezing">
+          <input type="checkbox" name="symptoms" value="continuous_sneezing">
             <span>Continuous Sneezing</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="acidity">
+          <input type="checkbox" name="symptoms" value="acidity">
            <span>Acidity</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="vomiting">
+          <input type="checkbox" name="symptoms" value="vomiting">
            <span>Vomiting</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="weight_loss">
+          <input type="checkbox" name="symptoms"value="weight_loss">
            <span>Weight Loss</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="irregular_sugar_level">
+          <input type="checkbox" name="symptoms" value="irregular_sugar_level">
            <span>Irregular Sugar Level</span>
         </label>
         <label class="symptom-item">
-          <input type="checkbox" value="anxiety">
+          <input type="checkbox" name="symptoms" value="anxiety">
            <span>Anxiety</span>
         </label>
 </div>

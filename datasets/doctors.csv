@@ -1,0 +1,102 @@
+Gender,Age,Disease,DoctorID,Specialization
+M,45,AIDS,D01,Infectious Disease Specialist
+F,20,Acne,D02,Dermatologist
+M,60,Acute kidney injury,D03,Nephrologist
+F,72,Alzheimer disease,D04,Neurologist
+F,30,Anemia,D05,Hematologist
+M,28,Ankylosing spondylitis,D06,Rheumatologist
+F,35,Anxiety disorder,D07,Psychiatrist
+M,40,Appendicitis,D08,General Surgeon
+F,15,Asthma,D09,Pulmonologist
+M,50,Bell palsy,D10,Neurologist
+F,25,Bronchitis,D11,Pulmonologist
+M,35,COVID-19,D12,Infectious Disease Specialist
+F,60,Cataract,D13,Ophthalmologist
+M,28,Celiac disease,D14,Gastroenterologist
+F,55,Cervical spondylosis,D15,Orthopedic Specialist
+M,32,Cholera,D16,Infectious Disease Specialist
+F,45,Chronic Obstructive Pulmonary Disease,D17,Pulmonologist
+M,60,Chronic kidney disease,D18,Nephrologist
+F,50,Chronic cholestasis,D19,Gastroenterologist
+M,55,Cirrhosis,D20,Hepatologist
+F,18,Common Cold,D21,General Practitioner
+M,25,Conjunctivitis,D22,Ophthalmologist
+F,65,Coronary artery disease,D23,Cardiologist
+M,40,Crohn disease,D24,Gastroenterologist
+F,35,Deep vein thrombosis,D25,Hematologist
+M,28,Dengue,D26,Infectious Disease Specialist
+F,30,Depression,D27,Psychiatrist
+M,50,Diabetes mellitus,D28,Endocrinologist
+F,22,Eczema,D29,Dermatologist
+M,36,Encephalitis,D30,Neurologist
+F,48,Endocarditis,D31,Cardiologist
+F,29,Endometriosis,D32,Gynecologist
+F,55,Epilepsy,D33,Neurologist
+M,38,Erectile dysfunction,D34,Urologist
+F,20,Food poisoning,D35,Gastroenterologist
+M,42,GERD,D36,Gastroenterologist
+F,33,Gallbladder infection,D37,General Surgeon
+M,50,Gallstones,D38,General Surgeon
+F,40,Gastroenteritis,D39,Gastroenterologist
+M,45,Glaucoma,D40,Ophthalmologist
+F,60,Gout,D41,Rheumatologist
+M,35,Guillain-Barre syndrome,D42,Neurologist
+F,28,HIV infection,D43,Infectious Disease Specialist
+M,58,Heart attack,D44,Cardiologist
+F,65,Heart failure,D45,Cardiologist
+M,40,Heatstroke,D46,Emergency Medicine Specialist
+F,45,Hepatitis A,D47,Gastroenterologist / Hepatologist
+M,52,Hepatitis B,D48,Hepatologist / Infectious Disease Specialist
+F,48,Hepatitis C,D49,Hepatologist / Infectious Disease Specialist
+M,55,Hepatitis E,D50,Gastroenterologist / Hepatologist
+F,60,Hypertension,D51,Cardiologist
+M,35,Hyperthyroidism,D52,Endocrinologist
+F,30,Hypoglycemia,D53,Endocrinologist
+M,28,Hypothermia,D54,Emergency Medicine Specialist
+F,50,Hypothyroidism,D55,Endocrinologist
+M,22,Impetigo,D56,Dermatologist
+F,35,Influenza (FLU),D57,Infectious Disease Specialist
+M,40,Irritable bowel syndrome,D58,Gastroenterologist
+F,45,Kidney stones,D59,Urologist
+M,30,Laryngitis,D60,ENT Specialist
+F,55,Leukemia,D61,Hematologist
+M,50,Lymphoma,D62,Hematologist
+F,28,Malaria,D63,Infectious Disease Specialist
+M,12,Measles,D64,Pediatrician
+F,40,Meningitis,D65,Neurologist
+M,35,Migraine,D66,Neurologist
+F,45,Multiple sclerosis,D67,Neurologist
+M,10,Mumps,D68,Pediatrician
+F,25,Nephrotic syndrome,D69,Nephrologist
+M,38,Obesity,D70,Bariatric Physician / Dietitian
+F,60,Osteoarthritis,D71,Orthopedic Specialist
+M,70,Osteoporosis,D72,Orthopedic Specialist
+F,28,Otitis media,D73,ENT Specialist
+M,50,Pancreatitis,D74,Gastroenterologist
+F,65,Parkinson disease,D75,Neurologist
+M,40,Peptic ulcer disease,D76,Gastroenterologist
+F,55,Pericarditis,D77,Cardiologist
+M,32,Pneumonia,D78,Pulmonologist
+F,25,Polycystic ovary syndrome,D79,Gynecologist
+M,60,Prostate enlargement,D80,Urologist
+F,30,Psoriasis,D81,Dermatologist
+M,45,Pulmonary embolism,D82,Pulmonologist / Hematologist
+F,28,Rabies,D83,Infectious Disease Specialist
+M,55,Rheumatoid arthritis,D84,Rheumatologist
+F,10,Rubella,D85,Pediatrician
+M,35,Schizophrenia,D86,Psychiatrist
+F,42,Sepsis,D87,Critical Care Specialist
+M,18,Sickle cell disease,D88,Hematologist
+F,25,Sinusitis,D89,ENT Specialist
+M,60,Stroke,D90,Neurologist
+F,38,Systemic lupus erythematosus,D91,Rheumatologist
+M,30,Tetanus,D92,Infectious Disease Specialist
+F,20,Thalassemia,D93,Hematologist
+M,8,Tonsillitis,D94,Pediatrician
+F,45,Tuberculosis,D95,Infectious Disease Specialist
+M,12,Tuberculosis meningitis,D96,Pediatric Infectious Disease Specialist
+F,22,Typhoid,D97,Infectious Disease Specialist
+M,50,Ulcerative colitis,D98,Gastroenterologist
+F,35,Urinary tract infection,D99,Urologist
+M,55,Varicose veins,D100,Vascular Surgeon
+F,60,Vertigo,D101,ENT Specialist
