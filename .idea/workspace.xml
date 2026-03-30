@@ -4,33 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d312d23-b497-45c4-9ba7-ebd89ed4d45e" name="Changes" comment="first commit">
-      <change afterPath="$PROJECT_DIR$/datasets/Description_df.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/Precaution_df.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/Workouts_df.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/symptoms_df.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/MRS_MLTraining.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.venv/Scripts/python3.dll" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/Scripts/python3.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.venv/Scripts/python314.dll" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/Scripts/python314.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot_engine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/Doctor.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/Symptom-severity.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/Training.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/Training.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/description.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/diets.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/medications.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/precautions_df.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/symtoms_df.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/workout_df.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Medicine Recommendation system.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/columns.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contact.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/developer.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/developer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/result.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/result.html" afterDir="false" />
-    </list>
+    <list default="true" id="1d312d23-b497-45c4-9ba7-ebd89ed4d45e" name="Changes" comment="first commit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
