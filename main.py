@@ -24,16 +24,36 @@ doctor_df = pd.read_csv("datasets/doctors.csv")
 # ===============================
 # Prediction Function
 # ===============================
+# def predict_and_recommend(symptom_list):
+#
+#     # # Create empty input vector
+#     feature_columns = joblib.load("models/feature_columns.pkl")
+#     input_data = [0] * len(feature_columns)
+
+    # for symptom in symptom_list:
+    #     if symptom in feature_columns:
+    #     index = feature_columns.get_loc(symptom)
+    #     input_data[index] = 1
 def predict_and_recommend(symptom_list):
 
-    # # Create empty input vector
-    feature_columns = joblib.load("models/feature_columns.pkl")
+    # ✅ Clean symptoms (VERY IMPORTANT)
+    symptom_list = [s.strip().lower() for s in symptom_list]
+
+    # ✅ Use already loaded feature_columns (DO NOT reload)
     input_data = [0] * len(feature_columns)
+
+    matched_symptoms = []
 
     for symptom in symptom_list:
         if symptom in feature_columns:
             index = feature_columns.get_loc(symptom)
             input_data[index] = 1
+            matched_symptoms.append(symptom)
+
+    # ✅ Debug (you can remove later)
+    print("User Symptoms:", symptom_list)
+    print("Matched Symptoms:", matched_symptoms)
+
 
     # Convert to DataFrame
     input_df = pd.DataFrame([input_data], columns=feature_columns)
@@ -135,7 +155,7 @@ def predict_and_recommend(symptom_list):
     # ===============================
     # Low Confidence Handling
     # ===============================
-    if confidence < 40:
+    if confidence < 10:
         disease = "Unknown / Low Confidence"
         confidence = float(round(max(probabilities) * 100, 2))
 
@@ -155,18 +175,26 @@ def predict_and_recommend(symptom_list):
     }
 
 
-# ===============================
-# Routes
-# ===============================
-@app.route('/')
-def home():
-    return render_template("index.html")
+
+
 
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    # Get checkbox symptoms
+    checkbox_symptoms = request.form.getlist('symptoms')
 
-    symptoms = request.form.getlist('symptoms')
+    # Get text input
+    text_input = request.form.get('symptoms_text')
+
+    text_symptoms = []
+    if text_input:
+        text_symptoms = [s.strip().lower() for s in text_input.split(',') if s.strip()]
+
+    # Merge both
+    symptoms = checkbox_symptoms + text_symptoms
+
+    print("FINAL SYMPTOMS:", symptoms)
 
     if not symptoms:
         return render_template("index.html",
@@ -176,7 +204,8 @@ def predict():
 
     # Confidence safety rule
     if result["Confidence"] < 40:
-        result["Warning"] = "Prediction confidence is low. Please consult a doctor."
+        result["Warning"] = "Low confidence prediction. Symptoms may match multiple diseases. Please consult a doctor."
+
 
     result["Disclaimer"] = (
         "This AI system provides prediction based on symptoms. "
@@ -195,37 +224,12 @@ def predict():
         dis_doc=result.get('Doctor', 'General Physician'),
         dis_des=result.get('Description', 'No description available.')
     )
-
-
-@app.route('/about')
-def about():
-    return render_template("about.html")
-
-@app.route('/contact', methods=['GET', 'POST'])
-def contact():
-    if request.method == 'POST':
-        name = request.form.get("name")
-        email = request.form.get("email")
-        message = request.form.get("message")
-
-        print("NEW MESSAGE:", name, email, message)
-
-        return render_template("contact.html", success=True)  # return after POST
-
-    return render_template("contact.html", success=False)
-@app.route('/developer')
-def developer():
-    return render_template("developer.html")
-
-@app.route('/blog')
-def blog():
-    return render_template("blog.html")
-if __name__ == '__main__':
-    app.run(debug=True)
-
+# ===============================
+# Routes
+# ===============================
 @app.route('/')
 def home():
-    return render_template("home.html", breadcrumb=[
+    return render_template("index.html", breadcrumb=[
         {"name": "Home", "url": "/"}
     ])
 
@@ -238,16 +242,32 @@ def about():
     ])
 
 
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
+
     breadcrumb = [
         {"name": "Home", "url": "/"},
         {"name": "Contact", "url": "/contact"}
     ]
 
     if request.method == 'POST':
-        return render_template("contact.html", success=True, breadcrumb=breadcrumb)
+        name = request.form.get("name")
+        email = request.form.get("email")
+        message = request.form.get("message")
 
-    return render_template("contact.html", success=False, breadcrumb=breadcrumb)
+        print("NEW MESSAGE:", name, email, message)
+
+        return render_template(
+            "contact.html",
+            success=True,
+            breadcrumb=breadcrumb
+        )
+
+    return render_template(
+        "contact.html",
+        success=False,
+        breadcrumb=breadcrumb
+    )
 
 
 @app.route('/developer')
@@ -264,4 +284,8 @@ def blog():
         {"name": "Home", "url": "/"},
         {"name": "Blog", "url": "/blog"}
     ])
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 

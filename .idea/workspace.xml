@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d312d23-b497-45c4-9ba7-ebd89ed4d45e" name="Changes" comment="first commit" />
+    <list default="true" id="1d312d23-b497-45c4-9ba7-ebd89ed4d45e" name="Changes" comment="first commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/symptoms_df.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/symptoms_df.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/MRS_MLTraining.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/models/MRS_MLTraining.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/disease_prediction_model.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/disease_prediction_model.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
