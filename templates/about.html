@@ -8,121 +8,133 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 
-body{
-background:linear-gradient(120deg,#eef3f9,#e6f0ff);
-color:#333;
-}
+        body{
+        background:linear-gradient(120deg,#eef3f9,#e6f0ff);
+        color:#333;
+        }
 
-/* NAVBAR */
-.navbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:18px 60px;
+        /* NAVBAR */
+        .navbar{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:18px 60px;
+        }
 
+        .navbar h2{color:#2d9cdb;}
+        .navbar a{
+        text-decoration:none;
+        color:#333;
+        font-weight:600;
+        margin-left:20px;
+        }
+        .nav-link {
+          margin-left: 15px;
+          text-decoration: none;
+          color: black;
+          font-weight: 600;
+          transition: color 0.3s;
+        }
 
-}
+        .nav-link.active {
+          color: #2d9cdb; /* Highlight color */
+        }
 
-.navbar h2{color:#2d9cdb;}
-.navbar a{
-text-decoration:none;
-color:#333;
-font-weight:600;
-margin-left:20px;
-}
+        .nav-link:hover {
+          color: #2d9cdb;
+        }
+        /* HERO */
+        .hero{
+        padding:70px 20px;
+        text-align:center;
+        }
 
-/* HERO */
-.hero{
-padding:70px 20px;
-text-align:center;
-}
+        .hero h1{
+        font-size:42px;
+        color:#2d9cdb;
+        margin-bottom:15px;
+        }
 
-.hero h1{
-font-size:42px;
-color:#2d9cdb;
-margin-bottom:15px;
-}
+        .hero p{
+        font-size:18px;
+        max-width:750px;
+        margin:auto;
+        color:#555;
+        }
 
-.hero p{
-font-size:18px;
-max-width:750px;
-margin:auto;
-color:#555;
-}
+        /* CARDS */
+        .container{
+        width:1100px;
+        margin:40px auto;
+        }
 
-/* CARDS */
-.container{
-width:1100px;
-margin:40px auto;
-}
+        .grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+        gap:25px;
+        margin-top:30px;
+        }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:25px;
-margin-top:30px;
-}
+        .card{
+        background:white;
+        padding:30px;
+        border-radius:16px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.06);
+        transition:0.3s;
+        }
 
-.card{
-background:white;
-padding:30px;
-border-radius:16px;
-box-shadow:0 10px 30px rgba(0,0,0,0.06);
-transition:0.3s;
-}
+        .card:hover{
+        transform:translateY(-8px);
+        }
 
-.card:hover{
-transform:translateY(-8px);
-}
+        .card h3{
+        color:#2d9cdb;
+        margin-bottom:10px;
+        }
 
-.card h3{
-color:#2d9cdb;
-margin-bottom:10px;
-}
+        .card p{
+        color:#666;
+        font-size:15px;
+        line-height:1.6;
+        }
 
-.card p{
-color:#666;
-font-size:15px;
-line-height:1.6;
-}
+        /* TECH STACK */
+        .tech{
+        background:white;
+        padding:40px;
+        border-radius:16px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.06);
+        margin-top:40px;
+        text-align:center;
+        }
 
-/* TECH STACK */
-.tech{
-background:white;
-padding:40px;
-border-radius:16px;
-box-shadow:0 10px 30px rgba(0,0,0,0.06);
-margin-top:40px;
-text-align:center;
-}
+        .tech h2{color:#2d9cdb;margin-bottom:20px;}
 
-.tech h2{color:#2d9cdb;margin-bottom:20px;}
+        .badges{
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:12px;
+        margin-top:15px;
+        }
 
-.badges{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:12px;
-margin-top:15px;
-}
+        .badge{
+        background:#eef3ff;
+        padding:10px 16px;
+        border-radius:20px;
+        font-weight:600;
+        color:#2d9cdb;
+        }
 
-.badge{
-background:#eef3ff;
-padding:10px 16px;
-border-radius:20px;
-font-weight:600;
-color:#2d9cdb;
-}
-
-/* FOOTER */
-.footer{
-text-align:center;
-padding:30px;
-margin-top:60px;
-color:#777;
-}
+        /* FOOTER */
+        .footer{
+        text-align:center;
+        padding:30px;
+        margin-top:60px;
+        color:#777;
+        }
 
 </style>
 </head>
@@ -203,6 +215,8 @@ recommendations instantly to help users take early healthcare decisions.
 <span class="badge">JavaScript</span>
 <span class="badge">Chart.js</span>
 <span class="badge">Pandas</span>
+<span class="badge">Numpy</span>
+<span class="badge">GPT4ALL</span>
 </div>
 </div>
 
@@ -210,7 +224,7 @@ recommendations instantly to help users take early healthcare decisions.
 
 <!-- FOOTER -->
 <div class="footer">
-© 2026 AI Medical Assistant | Developed for intelligent healthcare prediction
+    © 2026 AI Medicine Recommendation System
 </div>
 
 </body>

@@ -1,211 +1,163 @@
+# ===============================
+# Local AI Chatbot (FINAL VERSION)
+# ===============================
 import random
+from gpt4all import GPT4All
 
-def clean_list(data):
-    if isinstance(data, list):
-        return ", ".join(str(x).replace("[","").replace("]","").replace("'","") for x in data if x)
-    return str(data)
+# Load model
+model = GPT4All("orca-mini-3b-gguf2-q4_0.gguf")
 
-def medical_chatbot(user_msg, disease, confidence,
-                    desc, precaution, medicine, diet, workout, doctor):
+# Conversation memory
+conversation_history = []
+
+
+# ---------------- PROJECT INFO ----------------
+def get_project_info(msg):
+
+    if "project" in msg or "system" in msg:
+        return "This is an AI-based medical recommendation system that predicts diseases from symptoms and provides guidance like medicine, diet, precautions and doctor suggestions."
+
+    if "how it works" in msg or "working" in msg:
+        return "User selects symptoms, the system uses a machine learning model to predict the disease and provides recommendations with confidence score."
+
+    if "algorithm" in msg or "model" in msg:
+        return "This project uses a Random Forest machine learning algorithm for disease prediction."
+
+    if "technology" in msg or "tech stack" in msg:
+        return "This system is built using Python, Flask, HTML, CSS and Scikit-learn."
+
+    if "accuracy" in msg:
+        return "The model provides high accuracy depending on symptoms, usually around 90%."
+
+    if "dataset" in msg:
+        return "The model is trained on a dataset of diseases and symptoms used for prediction."
+
+    if "developer" in msg or "who made" in msg:
+        return "This project was developed as an AI Medical Assistant for disease prediction and guidance."
+
+    return "This is a machine learning based medical recommendation system."
+
+
+# ---------------- AI RESPONSE ----------------
+def get_ai_response(message, disease=None):
+
+    global conversation_history
+
+    msg = message.lower().strip()
+
+    # -------- BASIC CHAT --------
+    if msg in ["hi", "hello", "hey", "hii"]:
+        return "Hello 👋 How can I help you today?"
+
+    if "how are you" in msg:
+        return random.choice([
+            "I'm doing great 😊 How can I help you?",
+            "All good here 🤖 What would you like to know?",
+        ])
+
+    if "thank" in msg:
+        return "You're welcome 😊"
+
+    if msg in ["ok", "okay", "okey"]:
+        return "Alright 👍"
+
+    if "what can you do" in msg:
+        return "I can help you understand diseases, symptoms, treatments and also explain how this project works."
+
+    # -------- PROJECT QUESTIONS (HIGH PRIORITY) --------
+    if any(word in msg for word in [
+        "project", "system", "algorithm", "model",
+        "how it works", "technology", "tech stack", "dataset"
+    ]):
+        return get_project_info(msg)
+
+    # -------- STORE MESSAGE --------
+    conversation_history.append({"role": "user", "content": message})
+
+    # -------- SAFE PROMPT --------
+    prompt = """
+You are a safe and helpful medical assistant.
+
+RULES:
+- Answer only what user asks
+- Do NOT assume disease
+- Do NOT say "you have"
+- Keep answer short (2-4 lines)
+- Use simple, calm language
+
+Conversation:
+"""
+
+    for item in conversation_history[-6:]:
+        prompt += f"{item['role']}: {item['content']}\n"
+
+    if disease:
+        prompt += f"\nContext Disease: {disease}\n"
+
+    prompt += "\nAnswer:"
+
+    # -------- GENERATE --------
+    try:
+        with model.chat_session():
+            response = model.generate(prompt, max_tokens=120)
+
+        if not response or not isinstance(response, str):
+            return "AI is temporarily unavailable."
+
+        response = response.strip()
+
+        # -------- SAFETY FILTER (SMART) --------
+        bad_phrases = ["you have", "you are suffering"]
+        if any(p in response.lower() for p in bad_phrases):
+            response = "I recommend consulting a doctor for proper guidance."
+
+        # Remove unwanted lists
+        if "1." in response:
+            response = response.split("1.")[0]
+
+        # Save response
+        conversation_history.append({"role": "assistant", "content": response})
+
+        return response
+
+    except Exception as e:
+        print("AI Error:", e)
+        return "AI is temporarily unavailable."
+
+
+# ---------------- RULE-BASED MEDICAL ----------------
+def medical_chatbot(user_msg, disease=None, confidence=None,
+                    desc=None, precaution=None, medicine=None,
+                    diet=None, workout=None, doctor=None):
 
     msg = user_msg.lower().strip()
 
-    medicine = clean_list(medicine)
-    diet = clean_list(diet)
-    precaution = clean_list(precaution)
-    workout = clean_list(workout)
+    # -------- GREETING --------
+    if msg in ["hi", "hello", "hey"]:
+        return "Hello 👋 I am your AI medical assistant."
 
-    # ---------------- greetings ----------------
-    if msg in ["hi","hello","hey","hii","hallo","hy","babe","sweetie","darling","friend","hy ai"]:
-        return "Hello 👋 I am your AI medical assistant. Ask me anything about your disease."
-    # ---------------- how are you ----------------
-    if "how are you" in msg:
-        replies = [
-            "I am functioning perfectly 😊 How can I assist you with your health today?",
-            "I'm doing great and ready to help with medical guidance.",
-            "All good here 🤖 How can I help you today?",
-            "I am fine. Ask me anything about your health or this project."
-        ]
-        return random.choice(replies)
-    # ---------------- precautions / prevention ----------------
-    if ("precaution" in msg or
-            "care" in msg or
-            "prevent" in msg or
-            "prevention" in msg or
-            "avoid" in msg or
-            "safety" in msg):
-        return f"To prevent {disease}, follow these precautions: {precaution}"
-    if "how to prevent" in msg:
-        return f"To prevent {disease}, follow these precautions: {precaution}"
-
-    if "how to cure" in msg:
-        return f"{disease} can be managed with proper treatment, care and medicines. Consult a {doctor} for best treatment."
-
-    # ---------------- want to learn ----------------
-    if "learn" in msg or "study" in msg:
-        return f"Great 😊 let's learn about {disease}. You can ask causes, symptoms, diet, medicine, doctor or danger level."
-
-    # ---------------- what disease ----------------
-    if "what is" in msg or "about disease" in msg:
-        return f"{disease}: {desc}"
-
-    # ---------------- symptoms ----------------
-    if "symptom" in msg:
+    # -------- SYMPTOMS --------
+    if "symptom" in msg and desc:
         return f"Common symptoms of {disease}: {desc}"
 
-    # ---------------- cause ----------------
-    if "cause" in msg or "how i get" in msg or "why" in msg:
-        return f"{disease} occurs due to infection, immunity issues or lifestyle factors. {desc}"
+    # -------- MEDICINE --------
+    if "medicine" in msg and medicine:
+        return f"Medicines for {disease}: {medicine}. Please consult a doctor."
 
-    # ---------------- danger ----------------
-    if "danger" in msg or "serious" in msg:
-        return f"{disease} can become serious if untreated. Early treatment and proper care helps recovery."
-
-    # ---------------- treatment ----------------
-    if "treatment" in msg or "recover" in msg or "cure" in msg:
-        return f"Treatment includes proper medication, healthy diet and doctor's guidance."
-
-    # ---------------- medicine ----------------
-    if "medicine" in msg or "drug" in msg:
-        return f"Common medicines for {disease}: {medicine}. Consult doctor before taking any medicine."
-
-    # ---------------- doctor ----------------
-    if "doctor" in msg or "specialist" in msg:
-        return f"For {disease}, you should consult a {doctor}."
-
-    # ---------------- diet ----------------
-    if "diet" in msg or "food" in msg or "eat" in msg:
+    # -------- DIET --------
+    if "diet" in msg and diet:
         return f"Recommended diet for {disease}: {diet}"
 
-    # ---------------- precautions ----------------
-    if "precaution" in msg or "care" in msg:
-        return f"Precautions: {precaution}"
+    # -------- WORKOUT --------
+    if "workout" in msg or "exercise" in msg:
+        if workout:
+            return f"Workout advice: {workout}"
+        else:
+            return "Light exercise like walking or yoga is helpful. Consult a doctor before starting."
 
-    # ---------------- workout ----------------
-    if "exercise" in msg or "gym" in msg or "workout" in msg:
-        return f"Workout tips: {workout}"
+    # -------- DOCTOR --------
+    if "doctor" in msg and doctor:
+        return f"You should consult a {doctor}."
 
-    # ---------------- confidence ----------------
-    if "percent" in msg or "confidence" in msg or "accurate" in msg:
-        return f"AI prediction confidence for {disease} is {confidence}%. For confirmation consult doctor."
-
-    # ---------------- cause ----------------
-    if "how i get" in msg or "cause" in msg or "why" in msg:
-         return f"{disease} happens due to infection, weak immunity or medical conditions. {desc}"
-        # ---------------- death fear ----------------
-    if "die" in msg or "death" in msg:
-        return f"Don't worry ❤️, {disease} is usually not life-threatening if treated properly. However, consult a {doctor} if symptoms become severe."
-    # ---------------- who made you ----------------
-    if "who made you" in msg or "developer" in msg:
-        return "I was developed as an AI Medical Assistant project to help predict diseases and guide patients."
-
-    # ---------------- what can you do ----------------
-    if "what can you do" in msg:
-        return "I can tell you about disease description, symptoms, medicine, diet, precautions, workout and doctor suggestions."
-
-    # ---------------- are you real doctor ----------------
-    if "real doctor" in msg:
-        return "I am an AI assistant 🤖 not a real doctor, but I provide guidance based on medical data."
-
-    # ---------------- how accurate ----------------
-    if "how accurate" in msg:
-        return f"My prediction accuracy depends on symptoms provided. Current confidence for {disease} is {confidence}%."
-    if "project" in msg:
-        return "This AI medical recommendation system predicts disease using machine learning and provides diet, medicine and doctor suggestions."
-
-    ALL_DISEASES = [
-        "fungal infection", "allergy", "gerd", "chronic cholestasis", "drug reaction",
-        "peptic ulcer disease", "aids", "diabetes", "gastroenteritis", "bronchial asthma",
-        "hypertension", "migraine", "cervical spondylosis", "paralysis", "jaundice",
-        "malaria", "chicken pox", "dengue", "typhoid", "hepatitis a", "hepatitis b",
-        "hepatitis c", "hepatitis d", "hepatitis e", "alcoholic hepatitis", "tuberculosis",
-        "common cold", "pneumonia", "piles", "heart attack", "varicose veins",
-        "hypothyroidism", "hyperthyroidism", "hypoglycemia", "osteoarthritis", "arthritis",
-        "vertigo", "acne", "urinary tract infection", "psoriasis", "impetigo"
-    ]
-    # ---------------- asking about another disease ----------------
-    # ----------- user asking about any disease -------------
-    for d in ALL_DISEASES:
-        if d in msg:
-            if d.lower() == disease.lower():
-                return f"You are predicted with {disease}. Ask me about symptoms, medicine, diet, precautions or doctor."
-
-            else:
-                return f"You are currently predicted with {disease}, but you asked about {d}. I can give general guidance, but for accurate diagnosis please consult doctor or run prediction with symptoms of {d}."
-
-    # -------- general disease info ----------
-    if "tell me about" in msg or "what is" in msg:
-        for d in ALL_DISEASES:
-            if d in msg:
-                return f"{d.title()} is a medical condition that requires proper diagnosis and treatment. Maintain healthy lifestyle and consult specialist if symptoms appear."
-
-    motivation = [
-        "Stay positive 😊 recovery is faster with good care.",
-        "Health is wealth 💚 take proper rest.",
-        "Follow doctor advice and stay safe.",
-        "Early treatment gives best results."
-    ]
-
-    if "scared" in msg or "worried" in msg:
-        return random.choice(motivation)
-    # ---------------- dataset question ----------------
-    if "dataset" in msg or "data set" in msg:
-        return "This system uses a disease prediction dataset containing symptoms and corresponding diseases. It includes 40+ diseases and 130+ symptoms used to train the machine learning model."
-
-    # ---------------- model used ----------------
-    if "model" in msg or "algorithm" in msg:
-        return "I use a Random Forest Machine Learning model to predict diseases based on selected symptoms."
-
-    # ---------------- why this model ----------------
-    if "why random forest" in msg:
-        return "Random Forest provides high accuracy, handles multiple symptoms well and is ideal for medical classification problems."
-
-    # ---------------- accuracy ----------------
-    if "accuracy" in msg:
-        return "The model gives high accuracy depending on symptoms provided, generally around 90% or more for trained dataset."
-
-    # ---------------- technology ----------------
-    if "technology" in msg or "tech stack" in msg or "language" in msg:
-        return "This project is built using Python, Flask for backend, HTML CSS Bootstrap for frontend and Scikit-learn for machine learning."
-
-    # ---------------- about project ----------------
-    if "project" in msg or "system" in msg:
-        return "This is an AI-based medical recommendation system that predicts diseases from symptoms and provides medicine, diet, precautions, workout and specialist doctor suggestions."
-
-    # ---------------- how it works ----------------
-    if "how works" in msg or "how it works" in msg or "process" in msg:
-        return "User selects symptoms, system sends them to machine learning model, model predicts disease and shows complete medical guidance with confidence score."
-
-    # ---------------- future improvement ----------------
-    if "future" in msg or "improve" in msg:
-        return "Future improvements include adding real hospital data, improving accuracy using deep learning and deploying the system online for public use."
-
-    # ---------------- who made ----------------
-    if "who made you" in msg:
-        return "I was developed as an AI medical assistant project to help users get early health guidance using machine learning."
-
-    # ---------------- thanks/love ----------------
-    if "thank" in msg:
-        return "You're welcome 😊 Always here to help with your health."
-
-    if "love" in msg:
-        return "Haha 😄 I care about your health. Stay safe and healthy."
-
-
-    # ---------------- bye ----------------
-    if "bye" in msg:
-        return "Take care 😊 Stay healthy and safe."
-
-    # ---------------- fallback ----------------
-    return f"""
-You are predicted with {disease} ({confidence}% confidence)
-
-Ask me:
-• Symptoms
-• Causes
-• Medicine
-• Diet
-• Doctor
-• Danger level
-• Treatment
-"""
+    # -------- FALLBACK TO AI --------
+    return get_ai_response(user_msg, disease)

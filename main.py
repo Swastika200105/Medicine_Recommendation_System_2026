@@ -2,8 +2,19 @@ from flask import Flask, render_template, request
 import numpy as np
 import pandas as pd
 import joblib
+#GPT4ALL
+from gpt4all import GPT4All
+
+
+from chatbot_engine import get_ai_response
+
+model = GPT4All("orca-mini-3b-gguf2-q4_0.gguf")
+
+
+
 
 app = Flask(__name__)
+
 
 # ===============================
 # Load ML Components
@@ -121,20 +132,34 @@ def predict_and_recommend(symptom_list):
     # Workout
     # ===============================
     workout_details = {}
+
     workout_row = workout_df[workout_df['Disease'] == disease]
-    if len(workout_row) > 0:
+
+    if not workout_row.empty:
         row = workout_row.iloc[0]
+
         exercises = [row.get(f'Exercise_{i}') for i in range(1, 5)]
         exercises = [e for e in exercises if pd.notna(e)]
-        workout_details = {
-            "Exercises": exercises,
-            "Intensity": row['Intensity'] if pd.notna(row['Intensity']) else "Not specified",
-            "Duration": row['Duration'] if pd.notna(row['Duration']) else "Not specified",
-            "Frequency": row['Frequency'] if pd.notna(row['Frequency']) else "Not specified",
-            "Notes": row['Notes'] if pd.notna(row['Notes']) else "No additional notes"
-        }
 
-    # ===============================
+        intensity = row.get('Intensity')
+        duration = row.get('Duration')
+        frequency = row.get('Frequency')
+        notes = row.get('Notes')
+
+        # If ANY real workout info exists
+        if exercises or pd.notna(intensity) or pd.notna(duration) or pd.notna(frequency) or pd.notna(notes):
+            workout_details = {
+                "Exercises": exercises if exercises else None,
+                "Intensity": intensity if pd.notna(intensity) else None,
+                "Duration": duration if pd.notna(duration) else None,
+                "Frequency": frequency if pd.notna(frequency) else None,
+                "Notes": notes if pd.notna(notes) else "No additional notes"
+            }
+        else:
+            # No workout info → show single message
+            workout_details = {"Notes": f"No specific workout available for {disease}. Rest and consult a doctor."}
+    else:
+        workout_details = {"Notes": f"No workout data available for {disease}."}
     # Diets
     # ===============================
     diet_row = diet_df[diet_df['Disease'] == disease]
@@ -284,6 +309,19 @@ def blog():
         {"name": "Home", "url": "/"},
         {"name": "Blog", "url": "/blog"}
     ])
+
+
+# ---------------- Chatbot Route ----------------
+@app.route('/chatbot', methods=['POST'])
+def chatbot():
+    data = request.get_json()
+    user_message = data.get("message")
+    disease = data.get("disease")
+
+    reply = get_ai_response(user_message, disease)
+    return {"reply": reply}
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

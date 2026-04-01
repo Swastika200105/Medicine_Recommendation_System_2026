@@ -9,31 +9,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-@media print{
-    body{background:white;}
-    h1{color:#2d9cdb;}
-    ul{margin-left:20px;}
-    hr{margin:20px 0;}
-}
+    @media print{
+        body{background:white;}
+        h1{color:#2d9cdb;}
+        ul{margin-left:20px;}
+        hr{margin:20px 0;}
+    }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body{background:#eef3f9;}
-.navbar{display:flex;justify-content:space-between;align-items:center;padding:18px 50px;background:white;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
-.container{width:1100px;margin:30px auto;}
-.card{background:white;border-radius:16px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,0.05);margin-bottom:25px;}
-.summary{display:flex;justify-content:space-between;align-items:center;}
-.circle{width:180px;height:180px;border-radius:50%;background:conic-gradient(#2d9cdb {{top3[0][1]}}%, #e6ecf3 0%);display:flex;justify-content:center;align-items:center;}
-.circle-inner{width:130px;height:130px;border-radius:50%;background:white;display:flex;justify-content:center;align-items:center;font-size:28px;font-weight:700;color:#2d9cdb;}
-.bar{background:#e6ecf3;height:22px;border-radius:20px;margin-top:6px;overflow:hidden;}
-.fill{height:100%;}
-.tabs{display:flex;gap:12px;margin-top:20px;}
-.tab{padding:10px 18px;background:#e6ecf3;border-radius:20px;cursor:pointer;font-weight:600;}
-.tab.active{background:#2d9cdb;color:white;}
-.content{margin-top:20px;line-height:1.7;}
-ul{margin-left:18px;margin-top:8px;}
-button{padding:10px 18px;border:none;border-radius:8px;background:#2d9cdb;color:white;font-weight:600;cursor:pointer;}
-#chart{width:240px !important;height:240px !important;}
-</style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body{background:#eef3f9;}
+    .navbar{display:flex;justify-content:space-between;align-items:center;padding:18px 50px;background:white;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+    .container{width:1100px;margin:30px auto;}
+    .card{background:white;border-radius:16px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,0.05);margin-bottom:25px;}
+    .summary{display:flex;justify-content:space-between;align-items:center;}
+    .circle{width:180px;height:180px;border-radius:50%;background:conic-gradient(#2d9cdb {{top3[0][1]}}%, #e6ecf3 0%);display:flex;justify-content:center;align-items:center;}
+    .circle-inner{width:130px;height:130px;border-radius:50%;background:white;display:flex;justify-content:center;align-items:center;font-size:28px;font-weight:700;color:#2d9cdb;}
+    .bar{background:#e6ecf3;height:22px;border-radius:20px;margin-top:6px;overflow:hidden;}
+    .fill{height:100%;}
+    .tabs{display:flex;gap:12px;margin-top:20px;}
+    .tab{padding:10px 18px;background:#e6ecf3;border-radius:20px;cursor:pointer;font-weight:600;}
+    .tab.active{background:#2d9cdb;color:white;}
+    .content{margin-top:20px;line-height:1.7;}
+    ul{margin-left:18px;margin-top:8px;}
+    button{padding:10px 18px;border:none;border-radius:8px;background:#2d9cdb;color:white;font-weight:600;cursor:pointer;}
+    #chart{width:240px !important;height:240px !important;}
+    </style>
 
 </head>
 <body>
@@ -191,16 +191,26 @@ html += `</ul>`;
 html = `<h3>Diet</h3><ul>`;
 diets.forEach(d => { if(d) html += `<li>${d}</li>`; });
 html += `</ul>`;
-} else if(tab==="work"){
-html = `<h3>Workout</h3><ul>`;
-if(workout.Exercises){
-workout.Exercises.forEach(e => { if(e) html += `<li>${e}</li>`; });
-}
-html += `</ul>`;
-html += `<p>Intensity: ${workout.Intensity || 'Not specified'}</p>`;
-html += `<p>Duration: ${workout.Duration || 'Not specified'}</p>`;
-html += `<p>Frequency: ${workout.Frequency || 'Not specified'}</p>`;
-html += `<p>Notes: ${workout.Notes || 'No additional notes'}</p>`;
+}else if(tab==="work"){
+    html = `<h3>Workout</h3>`;
+
+    // Case: No workout object or empty
+    if(!workout || Object.keys(workout).length === 0){
+        html += `<p>No specific workout available for this disease.</p>`;
+    } else {
+        // Exercises list
+        if(workout.Exercises && workout.Exercises.length > 0){
+            html += `<ul>`;
+            workout.Exercises.forEach(e => { if(e) html += `<li>${e}</li>`; });
+            html += `</ul>`;
+        }
+
+        // Only show fields if they exist
+        if(workout.Intensity) html += `<p><b>Intensity:</b> ${workout.Intensity}</p>`;
+        if(workout.Duration) html += `<p><b>Duration:</b> ${workout.Duration}</p>`;
+        if(workout.Frequency) html += `<p><b>Frequency:</b> ${workout.Frequency}</p>`;
+        if(workout.Notes) html += `<p><b>Notes:</b> ${workout.Notes}</p>`;
+    }
 } else if(tab==="doc"){
 html = `<h3>Recommended Specialist</h3><p><b>${doctor}</b></p>`;
 }
@@ -223,7 +233,10 @@ chatbox.scrollTop = chatbox.scrollHeight;
 let res = await fetch("/chatbot", {
 method:"POST",
 headers:{"Content-Type":"application/json"},
-body:JSON.stringify({message:msg})
+body: JSON.stringify({
+    message: msg,
+    disease: "{{ predicted_disease }}"
+})
 });
 let data = await res.json();
 document.getElementById("typing").remove();

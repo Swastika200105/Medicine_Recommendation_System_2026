@@ -40,7 +40,7 @@
         </li>
       </ul>
         <button class="btn btn-outline-light ms-2" onclick="toggleDarkMode()">
-            🌙 Mode
+            🌙
         </button>
 
     </div>
@@ -203,11 +203,7 @@
         {{message}}
     </div>
     {% endif %}
-        <br>
-        <button type="button" id="startSpeechRecognition" class="btn btn-primary" style="margin-left:3px;border:1px solid white; border-radius:20px;">
-            Start Speech Recognition
-        </button>
-        <br>
+
         <br>
 
         <!-- Display the transcribed text here -->
@@ -220,86 +216,51 @@
 </div>
 
 
-  <script>
-      //dark mode/light mode
+<script>
+    //dark mode/light mode
 
-      function toggleDarkMode() {
+    function toggleDarkMode() {
     document.body.classList.toggle("dark-mode");
 
-    // Save user preference
+    const btn = document.querySelector(".btn-outline-light");
     if (document.body.classList.contains("dark-mode")) {
         localStorage.setItem("theme", "dark");
+        btn.innerHTML = '☀️';
     } else {
         localStorage.setItem("theme", "light");
+        btn.innerHTML = '🌙';
     }
 }
 
-// Load saved mode
+// Load saved theme on page load
 window.onload = function () {
-    if (localStorage.getItem("theme") === "dark") {
+    const theme = localStorage.getItem("theme");
+    if (theme === "dark") {
         document.body.classList.add("dark-mode");
+        const btn = document.querySelector(".btn-outline-light");
+        if(btn) btn.innerHTML = '☀️';
     }
 };
-//popular symptoms input
-const checkboxes = document.querySelectorAll(".symptom-item input");
-const symptomInput = document.getElementById("symptoms");
+    //popular symptoms input
+    const checkboxes = document.querySelectorAll(".symptom-item input");
+    const symptomInput = document.getElementById("symptoms");
 
-checkboxes.forEach(box => {
-    box.addEventListener("change", updateSymptoms);
-});
-
-function updateSymptoms() {
-    let selected = [];
-
-    checkboxes.forEach(cb => {
-        if (cb.checked) {
-            selected.push(cb.value);
-        }
+    checkboxes.forEach(box => {
+        box.addEventListener("change", updateSymptoms);
     });
 
-    symptomInput.value = selected.join(", ");
-}
-//speech recognition
-const startBtn = document.getElementById("startSpeechRecognition");
-const symptomsInput = document.getElementById("symptoms");
+    function updateSymptoms() {
+        let selected = [];
 
-function cleanSpeech(text) {
-    return text
-        .toLowerCase()
-        .replace(/ and /g, ",")
-        .replace(/ i have /g, "")
-        .replace(/ i am having /g, "")
-        .replace(/ symptoms are /g, "")
-        .replace(/\./g, "")
-        .trim();
-}
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                selected.push(cb.value);
+            }
+        });
 
-startBtn.addEventListener("click", () => {
-    const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-        alert("Speech Recognition not supported in this browser");
-        return;
+        symptomInput.value = selected.join(", ");
     }
 
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
-    recognition.continuous = false;
-
-    recognition.onresult = function (event) {
-        const speechText = event.results[0][0].transcript;
-        const cleaned = cleanSpeech(speechText);
-        symptomsInput.value = cleaned;
-        console.log("Recognized:", cleaned);
-    };
-
-    recognition.onerror = function () {
-        alert("Speech recognition failed");
-    };
-
-    recognition.start();
-});
 </script>
 
 
