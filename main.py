@@ -1,14 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import numpy as np
 import pandas as pd
 import joblib
-#GPT4ALL
-from gpt4all import GPT4All
-
-
-from chatbot_engine import get_ai_response
-
-model = GPT4All("orca-mini-3b-gguf2-q4_0.gguf")
 
 
 
@@ -30,27 +23,12 @@ medication_df = pd.read_csv("datasets/Medications_df.csv")
 diet_df = pd.read_csv("datasets/Diets_df.csv")
 doctor_df = pd.read_csv("datasets/doctors.csv")
 
-
-
-# ===============================
-# Prediction Function
-# ===============================
-# def predict_and_recommend(symptom_list):
-#
-#     # # Create empty input vector
-#     feature_columns = joblib.load("models/feature_columns.pkl")
-#     input_data = [0] * len(feature_columns)
-
-    # for symptom in symptom_list:
-    #     if symptom in feature_columns:
-    #     index = feature_columns.get_loc(symptom)
-    #     input_data[index] = 1
 def predict_and_recommend(symptom_list):
 
-    # ✅ Clean symptoms (VERY IMPORTANT)
+    #  Clean symptoms (VERY IMPORTANT)
     symptom_list = [s.strip().lower() for s in symptom_list]
 
-    # ✅ Use already loaded feature_columns (DO NOT reload)
+    #  Use already loaded feature_columns (DO NOT reload)
     input_data = [0] * len(feature_columns)
 
     matched_symptoms = []
@@ -61,7 +39,7 @@ def predict_and_recommend(symptom_list):
             input_data[index] = 1
             matched_symptoms.append(symptom)
 
-    # ✅ Debug (you can remove later)
+    # Debug (you can remove later)
     print("User Symptoms:", symptom_list)
     print("Matched Symptoms:", matched_symptoms)
 
@@ -79,6 +57,7 @@ def predict_and_recommend(symptom_list):
     # Main predicted disease
     disease = label_encoder.inverse_transform([prediction])[0]
     confidence = float(round(max(probabilities) * 100, 2))
+
 
     # ===============================
     # Top 3 Predictions (CORRECT)
@@ -184,6 +163,8 @@ def predict_and_recommend(symptom_list):
         disease = "Unknown / Low Confidence"
         confidence = float(round(max(probabilities) * 100, 2))
 
+
+
     # ===============================
     # Return All Details
     # ===============================
@@ -249,6 +230,8 @@ def predict():
         dis_doc=result.get('Doctor', 'General Physician'),
         dis_des=result.get('Description', 'No description available.')
     )
+
+
 # ===============================
 # Routes
 # ===============================
@@ -311,17 +294,23 @@ def blog():
     ])
 
 
-# ---------------- Chatbot Route ----------------
+# ===============================
+# Chatbot Route
+# ===============================
+from flask import request, jsonify
+from chatbot_engine import professional_medical_chat
+
 @app.route('/chatbot', methods=['POST'])
 def chatbot():
     data = request.get_json()
     user_message = data.get("message")
-    disease = data.get("disease")
+    disease = data.get("disease")  # Optional: from prediction
+    prediction_result = data.get("prediction_result")  # Optional: full result dict
 
-    reply = get_ai_response(user_message, disease)
-    return {"reply": reply}
+    # Get professional AI reply
+    reply = professional_medical_chat(user_message, prediction_result)
 
-
+    return jsonify({"reply": reply})
 
 if __name__ == '__main__':
     app.run(debug=True)

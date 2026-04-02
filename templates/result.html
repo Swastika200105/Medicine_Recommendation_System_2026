@@ -151,71 +151,70 @@ const diets = {{ dis_diet | default([]) | tojson }};
 const workout = {{ dis_workout | default({}) | tojson }};
 const doctor = {{ dis_doc | default("General Physician") | tojson }};
 const description = {{ dis_des | default("No description available") | tojson }};
+const predictedDisease = "{{ predicted_disease }}";
+const userSymptoms = {{ user_symptoms | default([]) | tojson }};
 
 // CHART
 const ctx = document.getElementById('chart');
-new Chart(ctx, {
-type:'doughnut',
-data:{
-labels: top3_labels = [{% for d,p in top3 %}"{{d}}",{% endfor %}],
-datasets:[{
-data:[{% for d,p in top3 %}{{p}},{% endfor %}],
-backgroundColor:["#3b82f6","#10b981","#f59e0b"]
-}]
-},
-options:{
-responsive:true,
-maintainAspectRatio:false,
-plugins:{legend:{position:'bottom'}}
+if (ctx) {
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [{% for d,p in top3 %}"{{ d }}",{% endfor %}],
+            datasets: [{
+                data: [{% for d,p in top3 %}{{ p }},{% endfor %}],
+                backgroundColor: ["#3b82f6", "#10b981", "#f59e0b"]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
 }
-});
 
 // TAB FUNCTION
-function showTab(tab, el){
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-el.classList.add('active');
+function showTab(tab, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
 
-let html = "";
+    let html = "";
 
-if(tab==="desc"){
-html = `<h3>Description</h3><p>${description}</p>`;
-} else if(tab==="pre"){
-html = `<h3>Precautions</h3><ul>`;
-precautions.forEach(p => { if(p) html += `<li>${p}</li>`; });
-html += `</ul>`;
-} else if(tab==="med"){
-html = `<h3>Medication</h3><ul>`;
-medications.forEach(m => { if(m) html += `<li>${m}</li>`; });
-html += `</ul>`;
-} else if(tab==="diet"){
-html = `<h3>Diet</h3><ul>`;
-diets.forEach(d => { if(d) html += `<li>${d}</li>`; });
-html += `</ul>`;
-}else if(tab==="work"){
-    html = `<h3>Workout</h3>`;
-
-    // Case: No workout object or empty
-    if(!workout || Object.keys(workout).length === 0){
-        html += `<p>No specific workout available for this disease.</p>`;
-    } else {
-        // Exercises list
-        if(workout.Exercises && workout.Exercises.length > 0){
-            html += `<ul>`;
-            workout.Exercises.forEach(e => { if(e) html += `<li>${e}</li>`; });
-            html += `</ul>`;
+    if (tab === "desc") {
+        html = `<h3>Description</h3><p>${description}</p>`;
+    } else if (tab === "pre") {
+        html = `<h3>Precautions</h3><ul>`;
+        precautions.forEach(p => { if (p) html += `<li>${p}</li>`; });
+        html += `</ul>`;
+    } else if (tab === "med") {
+        html = `<h3>Medication</h3><ul>`;
+        medications.forEach(m => { if (m) html += `<li>${m}</li>`; });
+        html += `</ul>`;
+    } else if (tab === "diet") {
+        html = `<h3>Diet</h3><ul>`;
+        diets.forEach(d => { if (d) html += `<li>${d}</li>`; });
+        html += `</ul>`;
+    } else if (tab === "work") {
+        html = `<h3>Workout</h3>`;
+        if (!workout || Object.keys(workout).length === 0) {
+            html += `<p>No specific workout available for this disease.</p>`;
+        } else {
+            if (workout.Exercises && workout.Exercises.length > 0) {
+                html += `<ul>`;
+                workout.Exercises.forEach(e => { if (e) html += `<li>${e}</li>`; });
+                html += `</ul>`;
+            }
+            if (workout.Intensity) html += `<p><b>Intensity:</b> ${workout.Intensity}</p>`;
+            if (workout.Duration) html += `<p><b>Duration:</b> ${workout.Duration}</p>`;
+            if (workout.Frequency) html += `<p><b>Frequency:</b> ${workout.Frequency}</p>`;
+            if (workout.Notes) html += `<p><b>Notes:</b> ${workout.Notes}</p>`;
         }
-
-        // Only show fields if they exist
-        if(workout.Intensity) html += `<p><b>Intensity:</b> ${workout.Intensity}</p>`;
-        if(workout.Duration) html += `<p><b>Duration:</b> ${workout.Duration}</p>`;
-        if(workout.Frequency) html += `<p><b>Frequency:</b> ${workout.Frequency}</p>`;
-        if(workout.Notes) html += `<p><b>Notes:</b> ${workout.Notes}</p>`;
+    } else if (tab === "doc") {
+        html = `<h3>Recommended Specialist</h3><p><b>${doctor}</b></p>`;
     }
-} else if(tab==="doc"){
-html = `<h3>Recommended Specialist</h3><p><b>${doctor}</b></p>`;
-}
 
-document.getElementById("content").innerHTML = html;
+    document.getElementById("content").innerHTML = html;
 }
 
 // CHATBOT
@@ -244,22 +243,147 @@ document.getElementById("typing").remove();
 chatbox.innerHTML += `<div style="text-align:left;margin:10px 0;"><span style="background:#eef3f9;padding:10px 14px;border-radius:12px;display:inline-block;">${data.reply}</span></div>`;
 chatbox.scrollTop = chatbox.scrollHeight;
 }
-
 // DOWNLOAD REPORT
-function downloadReport(){
-let printContent = document.getElementById("printReport").innerHTML;
-let original = document.body.innerHTML;
-document.body.innerHTML = printContent;
-window.print();
-document.body.innerHTML = original;
-location.reload();
+function downloadReport() {
+    let printContent = document.getElementById("printReport").innerHTML;
+    let original = document.body.innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = original;
+    location.reload();
 }
 
-// ENTER KEY SEND
-document.getElementById("userInput").addEventListener("keypress", function(e){
-if(e.key === "Enter"){ e.preventDefault(); sendMessage(); }
+// Initialize enter key handler
+document.addEventListener('DOMContentLoaded', function() {
+    const userInput = document.getElementById('userInput');
+    if (userInput) {
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    }
 });
 </script>
-
 </body>
 </html>
+<!--// SAFE VARIABLES-->
+<!--const medications = {{ dis_med | default([]) | tojson }};-->
+<!--const precautions = {{ dis_pre | default([]) | tojson }};-->
+<!--const diets = {{ dis_diet | default([]) | tojson }};-->
+<!--const workout = {{ dis_workout | default({}) | tojson }};-->
+<!--const doctor = {{ dis_doc | default("General Physician") | tojson }};-->
+<!--const description = {{ dis_des | default("No description available") | tojson }};-->
+
+<!--// CHART-->
+<!--const ctx = document.getElementById('chart');-->
+<!--new Chart(ctx, {-->
+<!--type:'doughnut',-->
+<!--data:{-->
+<!--labels: top3_labels = [{% for d,p in top3 %}"{{d}}",{% endfor %}],-->
+<!--datasets:[{-->
+<!--data:[{% for d,p in top3 %}{{p}},{% endfor %}],-->
+<!--backgroundColor:["#3b82f6","#10b981","#f59e0b"]-->
+<!--}]-->
+<!--},-->
+<!--options:{-->
+<!--responsive:true,-->
+<!--maintainAspectRatio:false,-->
+<!--plugins:{legend:{position:'bottom'}}-->
+<!--}-->
+<!--});-->
+
+<!--// TAB FUNCTION-->
+<!--function showTab(tab, el){-->
+<!--document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));-->
+<!--el.classList.add('active');-->
+
+<!--let html = "";-->
+
+<!--if(tab==="desc"){-->
+<!--html = `<h3>Description</h3><p>${description}</p>`;-->
+<!--} else if(tab==="pre"){-->
+<!--html = `<h3>Precautions</h3><ul>`;-->
+<!--precautions.forEach(p => { if(p) html += `<li>${p}</li>`; });-->
+<!--html += `</ul>`;-->
+<!--} else if(tab==="med"){-->
+<!--html = `<h3>Medication</h3><ul>`;-->
+<!--medications.forEach(m => { if(m) html += `<li>${m}</li>`; });-->
+<!--html += `</ul>`;-->
+<!--} else if(tab==="diet"){-->
+<!--html = `<h3>Diet</h3><ul>`;-->
+<!--diets.forEach(d => { if(d) html += `<li>${d}</li>`; });-->
+<!--html += `</ul>`;-->
+<!--}else if(tab==="work"){-->
+<!--    html = `<h3>Workout</h3>`;-->
+
+<!--    // Case: No workout object or empty-->
+<!--    if(!workout || Object.keys(workout).length === 0){-->
+<!--        html += `<p>No specific workout available for this disease.</p>`;-->
+<!--    } else {-->
+<!--        // Exercises list-->
+<!--        if(workout.Exercises && workout.Exercises.length > 0){-->
+<!--            html += `<ul>`;-->
+<!--            workout.Exercises.forEach(e => { if(e) html += `<li>${e}</li>`; });-->
+<!--            html += `</ul>`;-->
+<!--        }-->
+
+<!--        // Only show fields if they exist-->
+<!--        if(workout.Intensity) html += `<p><b>Intensity:</b> ${workout.Intensity}</p>`;-->
+<!--        if(workout.Duration) html += `<p><b>Duration:</b> ${workout.Duration}</p>`;-->
+<!--        if(workout.Frequency) html += `<p><b>Frequency:</b> ${workout.Frequency}</p>`;-->
+<!--        if(workout.Notes) html += `<p><b>Notes:</b> ${workout.Notes}</p>`;-->
+<!--    }-->
+<!--} else if(tab==="doc"){-->
+<!--html = `<h3>Recommended Specialist</h3><p><b>${doctor}</b></p>`;-->
+<!--}-->
+
+<!--document.getElementById("content").innerHTML = html;-->
+<!--}-->
+
+<!--// chatbot-->
+<!--async function sendChatMessage(message, predictedDisease, symptoms) {-->
+<!--    try {-->
+<!--        const response = await fetch('/chatbot', {  // ← This is your endpoint-->
+<!--            method: 'POST',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json'-->
+<!--            },-->
+<!--            body: JSON.stringify({-->
+<!--                message: message,-->
+<!--                predicted_disease: predictedDisease,-->
+<!--                symptoms: symptoms-->
+<!--            })-->
+<!--        });-->
+
+<!--        const data = await response.json();-->
+
+<!--        if (data.status === 'success') {-->
+<!--            return data.response;-->
+<!--        } else {-->
+<!--            throw new Error(data.response);-->
+<!--        }-->
+
+<!--    } catch (error) {-->
+<!--        console.error('Chatbot error:', error);-->
+<!--        return "Sorry, I'm having trouble connecting. Please try again.";-->
+<!--    }-->
+<!--}-->
+
+<!--// DOWNLOAD REPORT-->
+<!--function downloadReport(){-->
+<!--let printContent = document.getElementById("printReport").innerHTML;-->
+<!--let original = document.body.innerHTML;-->
+<!--document.body.innerHTML = printContent;-->
+<!--window.print();-->
+<!--document.body.innerHTML = original;-->
+<!--location.reload();-->
+<!--}-->
+
+<!--// ENTER KEY SEND-->
+<!--document.getElementById("userInput").addEventListener("keypress", function(e){-->
+<!--if(e.key === "Enter"){ e.preventDefault(); sendMessage(); }-->
+<!--});-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+

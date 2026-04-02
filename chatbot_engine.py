@@ -1,163 +1,112 @@
-# ===============================
-# Local AI Chatbot (FINAL VERSION)
-# ===============================
 import random
 from gpt4all import GPT4All
 
-# Load model
-model = GPT4All("orca-mini-3b-gguf2-q4_0.gguf")
+# GPT4All instance
+gpt_model = GPT4All("orca-mini-3b-gguf2-q4_0.gguf")
 
-# Conversation memory
+# Keep conversation history for context
 conversation_history = []
 
+# Safe phrases filter
+BAD_PHRASES = ["you have", "you are suffering", "diagnose", "cure"]
 
-# ---------------- PROJECT INFO ----------------
-def get_project_info(msg):
-
-    if "project" in msg or "system" in msg:
-        return "This is an AI-based medical recommendation system that predicts diseases from symptoms and provides guidance like medicine, diet, precautions and doctor suggestions."
-
-    if "how it works" in msg or "working" in msg:
-        return "User selects symptoms, the system uses a machine learning model to predict the disease and provides recommendations with confidence score."
-
-    if "algorithm" in msg or "model" in msg:
-        return "This project uses a Random Forest machine learning algorithm for disease prediction."
-
-    if "technology" in msg or "tech stack" in msg:
-        return "This system is built using Python, Flask, HTML, CSS and Scikit-learn."
-
-    if "accuracy" in msg:
-        return "The model provides high accuracy depending on symptoms, usually around 90%."
-
-    if "dataset" in msg:
-        return "The model is trained on a dataset of diseases and symptoms used for prediction."
-
-    if "developer" in msg or "who made" in msg:
-        return "This project was developed as an AI Medical Assistant for disease prediction and guidance."
-
-    return "This is a machine learning based medical recommendation system."
-
-
-# ---------------- AI RESPONSE ----------------
-def get_ai_response(message, disease=None):
-
+# ------------------ AI PROMPT GENERATION ------------------
+def generate_ai_reply(user_msg, disease=None, context=None, max_tokens=150):
     global conversation_history
 
-    msg = message.lower().strip()
+    # Append user message
+    conversation_history.append({"role": "user", "content": user_msg})
 
-    # -------- BASIC CHAT --------
-    if msg in ["hi", "hello", "hey", "hii"]:
-        return "Hello 👋 How can I help you today?"
-
-    if "how are you" in msg:
-        return random.choice([
-            "I'm doing great 😊 How can I help you?",
-            "All good here 🤖 What would you like to know?",
-        ])
-
-    if "thank" in msg:
-        return "You're welcome 😊"
-
-    if msg in ["ok", "okay", "okey"]:
-        return "Alright 👍"
-
-    if "what can you do" in msg:
-        return "I can help you understand diseases, symptoms, treatments and also explain how this project works."
-
-    # -------- PROJECT QUESTIONS (HIGH PRIORITY) --------
-    if any(word in msg for word in [
-        "project", "system", "algorithm", "model",
-        "how it works", "technology", "tech stack", "dataset"
-    ]):
-        return get_project_info(msg)
-
-    # -------- STORE MESSAGE --------
-    conversation_history.append({"role": "user", "content": message})
-
-    # -------- SAFE PROMPT --------
-    prompt = """
-You are a safe and helpful medical assistant.
-
-RULES:
-- Answer only what user asks
-- Do NOT assume disease
-- Do NOT say "you have"
-- Keep answer short (2-4 lines)
-- Use simple, calm language
-
-Conversation:
-"""
+    prompt = "You are a professional, safe, and helpful medical assistant.\n"
+    prompt += "Answer only based on context and keep replies short (2-4 sentences).\n"
+    if disease:
+        prompt += f"Context Disease: {disease}\n"
+    if context:
+        prompt += f"Context Info: {context}\n"
+    prompt += "\nConversation:\n"
 
     for item in conversation_history[-6:]:
-        prompt += f"{item['role']}: {item['content']}\n"
+        role = "User" if item['role'] == "user" else "Assistant"
+        prompt += f"{role}: {item['content']}\n"
 
-    if disease:
-        prompt += f"\nContext Disease: {disease}\n"
+    prompt += "Assistant:"
 
-    prompt += "\nAnswer:"
-
-    # -------- GENERATE --------
     try:
-        with model.chat_session():
-            response = model.generate(prompt, max_tokens=120)
-
-        if not response or not isinstance(response, str):
-            return "AI is temporarily unavailable."
-
+        with gpt_model.chat_session():
+            response = gpt_model.generate(prompt, max_tokens=max_tokens)
         response = response.strip()
 
-        # -------- SAFETY FILTER (SMART) --------
-        bad_phrases = ["you have", "you are suffering"]
-        if any(p in response.lower() for p in bad_phrases):
-            response = "I recommend consulting a doctor for proper guidance."
+        # Remove bad phrases
+        for phrase in BAD_PHRASES:
+            if phrase in response.lower():
+                response = "I recommend consulting a qualified doctor for proper guidance."
 
-        # Remove unwanted lists
-        if "1." in response:
-            response = response.split("1.")[0]
-
-        # Save response
+        # Save assistant response
         conversation_history.append({"role": "assistant", "content": response})
-
         return response
 
     except Exception as e:
-        print("AI Error:", e)
+        print("GPT4All Error:", e)
         return "AI is temporarily unavailable."
 
-
-# ---------------- RULE-BASED MEDICAL ----------------
-def medical_chatbot(user_msg, disease=None, confidence=None,
-                    desc=None, precaution=None, medicine=None,
-                    diet=None, workout=None, doctor=None):
+# ------------------ PROFESSIONAL MEDICAL CHAT ------------------
+def professional_medical_chat(user_msg, prediction_result=None):
+    """
+    Uses structured disease prediction result to give professional responses.
+    prediction_result: dict from predict_and_recommend()
+    """
+    disease = prediction_result.get("Disease") if prediction_result else None
+    desc = prediction_result.get("Description") if prediction_result else None
+    med = prediction_result.get("Medication") if prediction_result else None
+    diet = prediction_result.get("Diets") if prediction_result else None
+    workout = prediction_result.get("Workout") if prediction_result else None
+    precautions = prediction_result.get("Precautions") if prediction_result else None
+    doctor = prediction_result.get("Doctor") if prediction_result else None
 
     msg = user_msg.lower().strip()
 
-    # -------- GREETING --------
+    # Pre-defined professional responses
     if msg in ["hi", "hello", "hey"]:
-        return "Hello 👋 I am your AI medical assistant."
+        return "Hello 👋 I am your AI medical assistant. How can I help you today?"
 
-    # -------- SYMPTOMS --------
-    if "symptom" in msg and desc:
-        return f"Common symptoms of {disease}: {desc}"
+    if "symptom" in msg or "sign" in msg:
+        if disease and desc:
+            return f"Common symptoms of {disease}: {desc}"
+        else:
+            return generate_ai_reply(user_msg, disease)
 
-    # -------- MEDICINE --------
-    if "medicine" in msg and medicine:
-        return f"Medicines for {disease}: {medicine}. Please consult a doctor."
+    if "medicine" in msg or "medication" in msg:
+        if disease and med:
+            med_str = ', '.join(med) if isinstance(med, list) else str(med)
+            return f"Recommended medications for {disease}: {med_str}. Please consult a doctor before taking any medicine."
+        else:
+            return generate_ai_reply(user_msg, disease)
 
-    # -------- DIET --------
-    if "diet" in msg and diet:
-        return f"Recommended diet for {disease}: {diet}"
+    if "diet" in msg or "food" in msg:
+        if disease and diet:
+            diet_str = ', '.join(diet)
+            return f"Suggested diet for {disease}: {diet_str}"
+        else:
+            return generate_ai_reply(user_msg, disease)
 
-    # -------- WORKOUT --------
     if "workout" in msg or "exercise" in msg:
         if workout:
-            return f"Workout advice: {workout}"
+            return f"Workout advice for {disease}: {workout}"
         else:
-            return "Light exercise like walking or yoga is helpful. Consult a doctor before starting."
+            return "Light exercise like walking or yoga is recommended. Always consult your doctor before starting any new routine."
 
-    # -------- DOCTOR --------
-    if "doctor" in msg and doctor:
-        return f"You should consult a {doctor}."
+    if "precaution" in msg or "prevent" in msg:
+        if precautions:
+            prec_str = ', '.join(precautions)
+            return f"Precautions for {disease}: {prec_str}"
+        else:
+            return generate_ai_reply(user_msg, disease)
 
-    # -------- FALLBACK TO AI --------
-    return get_ai_response(user_msg, disease)
+    if "doctor" in msg or "specialist" in msg:
+        if doctor:
+            return f"For {disease}, you should consult a {doctor}."
+        else:
+            return generate_ai_reply(user_msg, disease)
+
+    # Fallback to GPT4All
+    return generate_ai_reply(user_msg, disease)
